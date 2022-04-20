@@ -7,15 +7,19 @@ $hoverColor:#457b9d;
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap');
-html{
-    font-size: 62.5%; /*  */
+
+html {
+    font-size: 62.5%;
+    /*  */
     box-sizing: border-box;
 
 }
-ul{
+
+ul {
     padding: 0;
 }
-body{
+
+body {
     background-color: $mainColor;
     margin: 0;
     height: 100vh;
@@ -27,14 +31,14 @@ body{
     -moz-osx-font-smoothing: grayscale;
 }
 
-#root{
+#root {
     height: 100%;
-   
+
 }
 
 /* Layout */
 
-.grid-container{
+.grid-container {
     display: grid;
     grid-template-areas: 'header' 'main' 'footer';
     grid-template-columns: 1fr;
@@ -42,33 +46,33 @@ body{
     height: 100%;
 }
 
-header{
+header {
     grid-area: header;
     background-color: $secondaryColor;
     -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
     -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
     box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
 
-    .brand{
+    .brand {
 
         color: #457b9d;
         font-family: Comfortaa;
         font-size: 2.3rem;
     }
 
-    a{
+    a {
         color: $accentColor;
         padding: 1rem;
     }
 }
 
-main{
+main {
     grid-area: main;
     padding: 1rem;
 
 }
 
-footer{
+footer {
     grid-area: footer;
     background-color: $secondaryColor;
     font-size: 0.8em;
@@ -77,50 +81,97 @@ footer{
     -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
     box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
 }
+
 /* Common */
-h1{
+h1 {
     font-size: 1.8rem;
     padding: 1rem 0;
 }
-h2{
+
+h2 {
     font-size: 1.6rem;
     padding: 1rem 0;
 }
 
-a{
+a {
     color: $accentColor;
     text-decoration: none;
-    &:hover{
+
+    &:hover {
         color: $hoverColor;
     }
 }
 
+ul{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+li{
+    margin-top: 1rem;
+}
 
-.row{
+button{
+    background-color: $hoverColor;
+    color: $mainColor;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 0;
+    font-size: 1.6rem;
+    font-family: Roboto;
+    font-weight: 400;
+    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    
+    .block{
+        width: 100%;
+    }
+    
+
+}
+.primary{
+    background-color: #f0c040;
+    margin: 1rem 0 0 0;
+    &:hover{
+        background-color: $hoverColor;
+    }
+}
+
+.row {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-
+    
 
 }
-.row.center{
+
+.row.center {
     justify-content: center;
 }
+.row.top {
+    align-items: flex-start;
+}
 
-img{
+img {
     border-radius: 0.5rem;
 
-    .medium{
+    .medium {
         max-width: 29rem;
         width: 100%;
     }
+    .large{
+        width: 100%;
+    }
+
 }
 
 
 /* Card */
 
-.card{
+.card {
 
     border: 0.1rem #223b4f0d solid;
     border-radius: 0.5rem;
@@ -129,39 +180,79 @@ img{
     -moz-box-shadow: 1px 1px 5px 5px rgba(34, 60, 80, 0.05);
     box-shadow: 1px 1px 5px 5px #223b4f0d;
 }
-.card-body{
+
+.card-body {
     height: 13rem;
     width: 230px;
     padding: 1rem;
-    
-    h2{
+
+    h2 {
         height: 30px;
-        text-overflow:ellipsis;
-        overflow:hidden;
+        text-overflow: ellipsis;
+        overflow: hidden;
         // Addition lines for 2 line or multiline ellipsis
         display: -webkit-box !important;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         white-space: normal;
     }
-    >*{
+
+    >* {
         margin-bottom: 0.5rem;
     }
 }
 
-.price{
+.price {
     display: block;
     align-self: flex-end;
     font-size: 2rem;
 }
+
 /* Rating */
-.rating{
+.rating {
     display: block;
     align-self: flex-end;
-    span{
+
+    span {
         font-size: 0.8em;
         color: black;
         margin: 0.1rem;
     }
+
+    :last-child {
+
+        font-weight: 300;
+    }
 }
 
+.col-1{
+    flex: 1 1 25rem;
+}
+.col-2{
+    flex: -1 1 50rem;
+}
+
+/* Alert */
+.success{
+    color: #20a020;
+}
+.error{
+    color: #a02020;
+}
+
+@media only screen and (min-width: 780px) {
+    .col-1{
+        flex: 1 1 25rem;
+    }
+    .col-2{
+        flex: -1 1 50rem;
+    }
+    
+}
+
+@media only screen and (min-width: 1020px) {
+    main{
+        width: 1020px;
+        margin: 0 auto;
+    }
+}

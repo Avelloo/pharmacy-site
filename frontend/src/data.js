@@ -1,14 +1,15 @@
 const data = {
-    products:[
+    product:[
         {
             _id:'1',
             name:'Отрио, таблетки 10мг 30шт',
             categofy:'Лекарство',
             image:'/images/otrio.png',
             price:200,
+            countInStock:10,
             brand:'Акрихин',
             rating:4.5,
-            numReviews:10,
+            numReviews:40,           
             description:'Средство для нормализации обмена веществ',
         },
         {
@@ -17,6 +18,7 @@ const data = {
             categofy:'Лекарство',
             image:'/images/ksalatan.png',
             price:521,
+            countInStock:20,
             brand:'Пфайзер',
             rating:4,
             numReviews:3,
@@ -28,6 +30,7 @@ const data = {
             categofy:'Лекарство',
             image:'/images/gepon.png',
             price:2117,
+            countInStock:0,
             brand:'Иммафарма',
             rating:2.5,
             numReviews:4,
@@ -39,6 +42,7 @@ const data = {
             categofy:'Лекарство',
             image:'/images/ceftriakson.png',
             price:16,
+            countInStock:1,
             brand:'Рафарма',
             rating:4,
             numReviews:10,
@@ -50,6 +54,7 @@ const data = {
             categofy:'Лекарство',
             image:'/images/vildegra.png',
             price:970,
+            countInStock:99,
             brand:'Озон',
             rating:4,
             numReviews:5,
@@ -61,6 +66,7 @@ const data = {
             categofy:'Лекарство',
             image:'/images/dermatiks.png',
             price:50,
+            countInStock:123,
             brand:'Хансон Медикал',
             rating:4.6,
             numReviews:33,
