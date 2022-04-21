@@ -40,19 +40,19 @@ export default function ProductScreen(props) {
             <ul>
               <li>
                 <div className='row'>
-                  <div>Цена</div>
+                  <div>Цена:</div>
                   <div className='price'>{product.price} Руб.</div>
                 </div>
               </li>
               <li>
                 <div className='row'>
-                  <div>Статус</div>
+                  <div>Статус:</div>
                   <div>{product.countInStock > 0 ? <span className='success'>Есть в наличии</span> :
-                    <span className='error'>Товар отсутствует</span>}</div>
+                    <span className='danger'>Товар отсутствует</span>}</div>
                 </div>
               </li>
               <li>
-                <button className='primary block'>Добавить в корзину</button>
+                <button className='primary block'>В корзину</button>
               </li>
 
             </ul>
