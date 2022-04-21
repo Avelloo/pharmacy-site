@@ -8,6 +8,17 @@ app.get('/api/products', (req, res) => {
     res.send(data.product);
 });
 
+app.get('/api/products/:id', (req, res) => {
+    const product = data.product.find(x => x._id === req.params.id);
+    if (product) {
+        res.send(product);
+
+    }
+    else {
+        res.status(404).send({ message: 'Товар не найден!' });
+    }
+});
+
 app.get('/', (req, res) => {
     res.send('Server is ready');
 });

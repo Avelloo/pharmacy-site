@@ -132,7 +132,7 @@ button{
 
 }
 .primary{
-    background-color: #f0c040;
+    background-color: #40bef0;
     font-size: 1.1em;
     font-family: Comfortaa;
     margin: 1rem 0 0 0;
@@ -151,6 +151,9 @@ button{
 }
 
 .row.center {
+    justify-content: center;
+}
+.row.center.cards {
     justify-content: center;
 }
 .row.top {
@@ -238,7 +241,7 @@ img {
 .success{
     font-size: 0.9em;
     color: white;
-    background-color: #20a020;
+    background-color: #24c024;
     padding: 0.3rem 1rem 0.3rem 1rem;
     border: 0;
     border-radius: 0.3rem;
@@ -250,7 +253,7 @@ img {
 .danger{
     font-size: 0.9em;
     color: white;
-    background-color: #a02020;
+    background-color: #e25858;
     padding: 0.3rem 1rem 0.3rem 1rem;
     border: 0;
     border-radius: 0.3rem;
@@ -261,7 +264,7 @@ img {
     border-radius: 0.5rem;
 }
 .alert-danger{
-    color: #a02020;
+    color: #e25858;
     background-color: #ffe0e0e0;
     border-radius: 0.5rem;
 }
@@ -281,6 +284,7 @@ img {
         flex: -1 1 50rem;
     }
     
+    
 }
 
 @media only screen and (min-width: 1020px) {
@@ -288,4 +292,16 @@ img {
         width: 1020px;
         margin: 0 auto;
     }
+    
+
+}
+
+@media only screen and (min-width: 1200px) {
+    main{
+        width: 1200px;
+        margin: 0 auto;
+    }
+
+
+
 }
