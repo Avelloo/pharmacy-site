@@ -1,27 +1,43 @@
 import React from "react";
-import { BrowserRouter, Route } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { BrowserRouter, Link, Route } from 'react-router-dom';
+import CartScreen from "./screens/CartScreen";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 
 
 
 function App() {
+
+  const cart = useSelector(state => state.cart);
+  const { cartItems } = cart;
+
   return (
-    <BrowserRouter>
+    <BrowserRouter forceRefresh>
       <div className="grid-container">
         <header className="row">
           <div>
-            <a href="/" className="brand">web-аптека</a>
+            <Link to="/" className="brand">web-аптека</Link>
           </div>
           <div>
-            <a href="/cart">Корзина</a>
-            <a href="/signin">Войти в аккаунт</a>
+            <Link to="/cart">Корзина
+            {
+              cartItems.length > 0 && (
+                <span className="badge">{cartItems.length}</span>
+              )
+            }
+            </Link>
+            <Link to="/signin">Войти в аккаунт</Link>
           </div>
         </header>
         <main>
-          <Route path="/product/:id" component={ProductScreen}></Route>
-          <Route path="/" component={HomeScreen} exact></Route>
-          
+
+          <Route path="/product/:id" component={ProductScreen} key={2}></Route>
+          <Route path="/cart/:id?" component={CartScreen} key={3}></Route>
+          <Route path="/" component={HomeScreen} exact key={1}></Route>
+
+
+
         </main>
         <footer className="row center">
           Все права защищены
