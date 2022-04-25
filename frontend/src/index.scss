@@ -184,6 +184,12 @@ button{
 img {
     border-radius: 0.5rem;
 
+    .small{
+        max-width: 4rem;
+        width: 100%;
+        
+    }
+
     .medium {
         max-width: 29rem;
         width: 100%;
@@ -256,6 +262,10 @@ img {
 }
 .col-2{
     flex: -1 1 50rem;
+}
+
+.min-30{
+    min-width: 30rem;
 }
 
 /* Alert */
