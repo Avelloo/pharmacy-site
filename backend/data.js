@@ -1,9 +1,24 @@
+import bcrypt from "bcryptjs/dist/bcrypt.js";
+
 const data = {
+    users:[
+        {
+            name:'Admin',
+            email:'admin@admin.ru',
+            password: bcrypt.hashSync('admin',8),
+            isAdmin: true,
+        },
+        {
+            name:'TestUser',
+            email:'testuser@testuser.ru',
+            password: bcrypt.hashSync('testuser',8),
+            isAdmin: false,
+        },
+    ],
     product:[
         {
-            _id:'1',
             name:'Отрио, таблетки 10мг 30шт',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/otrio.png',
             price:200,
             countInStock:10,
@@ -13,9 +28,8 @@ const data = {
             description:'Средство для нормализации обмена веществ',
         },
         {
-            _id:'2',
             name:'Ксалатан, капли глазные 0,005 % 2,5 мл 1 шт',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/ksalatan.png',
             price:521,
             countInStock:20,
@@ -25,9 +39,8 @@ const data = {
             description:'Лекарство при глакуоме',
         },
         {
-            _id:'3',
             name:'Гепон лиофилизат 2 мг флакон, 1 шт',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/gepon.png',
             price:2117,
             countInStock:0,
@@ -37,9 +50,8 @@ const data = {
             description:'Иммуностимулятор',
         },
         {
-            _id:'4',
             name:'Цефтриаксон флакон 1 г',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/ceftriakson.png',
             price:16,
             countInStock:1,
@@ -49,9 +61,8 @@ const data = {
             description:'Антибиотик',
         },
         {
-            _id:'5',
             name:'Вилдегра таблетки пролонг. 100 мг, 10 шт.',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/vildegra.png',
             price:970,
             countInStock:99,
@@ -61,9 +72,8 @@ const data = {
             description:'Лекарства для терапии импотенции у мужчин ',
         },
         {
-            _id:'6',
             name:'Дерматикс гель силиконовый для предотвращения образования рубцов, 15 г',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/dermatiks.png',
             price:50,
             countInStock:123,
@@ -73,9 +83,8 @@ const data = {
             description:'Средство для лечения кожи ',
         },
         {
-            _id:'7',
             name:'Продукт 7',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/gepon.png',
             price:7,
             countInStock:0,
@@ -85,9 +94,8 @@ const data = {
             description:'Иммуностимулятор',
         },
         {
-            _id:'8',
             name:'Продукт 8',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/ceftriakson.png',
             price:8,
             countInStock:1,
@@ -97,9 +105,8 @@ const data = {
             description:'Антибиотик',
         },
         {
-            _id:'9',
             name:'Продукт 9',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/vildegra.png',
             price:9,
             countInStock:99,
@@ -109,9 +116,8 @@ const data = {
             description:'Лекарства для терапии импотенции у мужчин ',
         },
         {
-            _id:'10',
             name:'Продукт 10',
-            categofy:'Лекарство',
+            category:'Лекарство',
             image:'/images/dermatiks.png',
             price:10,
             countInStock:123,
