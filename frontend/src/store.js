@@ -9,14 +9,17 @@ import { userRegisterReducer, userSigninReducer } from "./reducers/userReducer";
 
 const initialState = {
   userSignin: {
-    userInfo: localStorage.getItem('userInfo')
-      ? JSON.parse(localStorage.getItem('userInfo'))
+    userInfo: localStorage.getItem("userInfo")
+      ? JSON.parse(localStorage.getItem("userInfo"))
       : null,
   },
   cart: {
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
+    shippingAdress: localStorage.getItem("shippingAdress")
+      ? JSON.parse(localStorage.getItem("shippingAdress"))
+      : {},
   },
 };
 const reducer = combineReducers({

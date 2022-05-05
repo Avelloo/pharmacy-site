@@ -145,7 +145,8 @@ button {
   background-color: #40bef0;
   font-size: 1.1em;
   font-family: Comfortaa;
-  margin: 1rem 0 0 0;
+  margin: 1rem auto auto auto;
+  width: 50%;
   &:hover {
     background-color: $hoverColor;
   }
@@ -317,18 +318,30 @@ img {
 /* form */
 
 .form {
+  
   max-width: 60rem;
   margin: 0 auto;
 }
 
 .form > div {
+  
   display: flex;
   flex-direction: column;
   margin: 1rem;
 }
 .form label {
+  
   margin: 1rem 0;
   display: block;
+}
+.form input {
+  
+  border-bottom: 1px solid #70C8FF;
+
+  &:focus{
+    border: none;
+  }
+
 }
 
 /* dropdown */
@@ -356,4 +369,18 @@ img {
   margin: 0;
   margin-top: 0.4rem;
   border-radius: 0.5rem;
+}
+
+/* Checkout steps */
+
+.checkout-steps > div{
+  border-top: 0.3rem #c0c0c0 solid;
+  color: #c0c0c0;
+  flex: 1;
+  padding: 1rem;
+}
+.checkout-steps > div.active{
+  border-top-color: $hoverColor;
+  color: $hoverColor;
+  font-weight: bold;
 }
