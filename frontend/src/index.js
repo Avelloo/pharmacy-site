@@ -10,13 +10,15 @@ import history from "./history";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Router history={history}>
-    <Provider store={store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </Provider>
-  </Router>
+
+    <Router history={history}>
+      <Provider store={store}>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </Provider>
+    </Router>
+
 );
 
 // If you want to start measuring performance in your app, pass a function

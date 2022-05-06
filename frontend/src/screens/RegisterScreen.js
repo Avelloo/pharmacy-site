@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { register } from '../actions/userActions';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { register } from "../actions/userActions";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
 
 export default function RegisterScreen(props) {
   const [email, setEmail] = useState("");
@@ -11,21 +11,19 @@ export default function RegisterScreen(props) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const redirect = props.location.search
-    ? props.location.search.split("=")[1]
-    : "/";
+  const { search } = useLocation();
+  const redirectInUrl = new URLSearchParams(search).get('redirect');
+  const redirect = redirectInUrl ? redirectInUrl : '/';
 
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if(password !== confirmPassword){
+    if (password !== confirmPassword) {
       alert("Пароли не совпадают");
-    }
-    else{
+    } else {
       dispatch(register(name, email, password));
     }
-
   };
 
   const userRegister = useSelector((state) => state.userRegister);
@@ -94,7 +92,8 @@ export default function RegisterScreen(props) {
         <div>
           <label />
           <div>
-            Уже есть аккаунт? <Link to={'/signin?redirect=${redirect}'}>Войти</Link>
+            Уже есть аккаунт?{" "}
+            <Link to={`/signin?redirect=${redirect}`}>Войти</Link>
           </div>
         </div>
       </form>

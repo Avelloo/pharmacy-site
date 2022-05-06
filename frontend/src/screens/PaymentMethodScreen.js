@@ -7,11 +7,12 @@ export default function PaymentMethodScreen(props) {
 
   const cart = useSelector(state => state.cart);
   const {shippingAdress} = cart;
-  if(!shippingAdress.adress){
+  if(!shippingAdress.fullName){
       props.history.push('/shipping');
   }
 
-  const [paymentMethod, setPaymentMethod] = useState("robokassa");
+
+  const [paymentMethod, setPaymentMethod] = useState("Robokassa");
 
   const dispatch = useDispatch(props);
 
@@ -39,13 +40,13 @@ export default function PaymentMethodScreen(props) {
               checked
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></input>
-            <label htmlFor="robokassa">Robokassa</label>
+            <label htmlFor="Robokassa">Robokassa</label>
           </div>
           <div>
             <input
               type="radio"
               id="bypass"
-              value="bypass"
+              value="Эмулятор успешной покупки"
               name="paymentMethod"
               required
               onChange={(e) => setPaymentMethod(e.target.value)}
