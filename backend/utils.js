@@ -1,7 +1,7 @@
-import jws from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export const generateToken = (user) => {
-  return jws.sign(
+  return jwt.sign(
     {
       _id: user._id,
       name: user.name,

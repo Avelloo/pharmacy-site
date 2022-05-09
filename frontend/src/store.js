@@ -1,26 +1,33 @@
-import { createStore, compose, applyMiddleware, combineReducers } from "redux";
-import thunk from "redux-thunk";
-import { cartReducer } from "./reducers/cartReducers";
+import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
+import { cartReducer } from './reducers/cartReducers';
+import {
+  orderCreateReducer,
+  orderDetailsReducer,
+} from './reducers/orderReducers';
 import {
   productDetailsReducer,
   productListReducer,
-} from "./reducers/productReducers";
-import { userRegisterReducer, userSigninReducer } from "./reducers/userReducer";
+} from './reducers/productReducers';
+import {
+  userRegisterReducer,
+  userSigninReducer,
+} from './reducers/userReducer';
 
 const initialState = {
   userSignin: {
-    userInfo: localStorage.getItem("userInfo")
-      ? JSON.parse(localStorage.getItem("userInfo"))
+    userInfo: localStorage.getItem('userInfo')
+      ? JSON.parse(localStorage.getItem('userInfo'))
       : null,
   },
   cart: {
-    cartItems: localStorage.getItem("cartItems")
-      ? JSON.parse(localStorage.getItem("cartItems"))
+    cartItems: localStorage.getItem('cartItems')
+      ? JSON.parse(localStorage.getItem('cartItems'))
       : [],
-    shippingAdress: localStorage.getItem("shippingAdress")
-      ? JSON.parse(localStorage.getItem("shippingAdress"))
+    shippingAddress: localStorage.getItem('shippingAddress')
+      ? JSON.parse(localStorage.getItem('shippingAddress'))
       : {},
-      paymentMethod: 'Robokassa',
+    paymentMethod: 'PayPal',
   },
 };
 const reducer = combineReducers({
@@ -29,6 +36,8 @@ const reducer = combineReducers({
   cart: cartReducer,
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,
+  orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

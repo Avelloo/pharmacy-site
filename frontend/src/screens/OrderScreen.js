@@ -1,39 +1,25 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { createOrder } from "../actions/orderActions";
-import CheckoutSteps from "../components/CheckoutSteps";
-import { ORDER_CREATE_RESET } from "../constants/orderConstants";
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
+import { detailsOrder } from "../actions/orderActions";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
 
-export default function PlaceOrderScreen(props) {
-  const cart = useSelector((state) => state.cart);
-  if (!cart.paymentMethod) {
-    props.history("/payment");
-  }
-
-  const orderCreate = useSelector((state) => state.orderCreate);
-  const { loading, success, error, order } = orderCreate;
-  const toPrice = (num) => Number(num.toFixed(2)); // 5.123 => "5.12" => 5.12
-  cart.itemsPrice = toPrice(
-    cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0)
-  );
-  cart.shippingPrice = cart.itemsPrice > 600 ? toPrice(0) : toPrice(150);
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
+export default function OrderScreen(props) {
+  const orderId = props.match.params.id;
+  const orderDetails = useSelector((state) => state.orderDetails);
+  const { order, loading, error } = orderDetails;
   const dispatch = useDispatch();
-  const placeOrderHandler = () => {
-    dispatch(createOrder({ ...cart, orderItems: cart.cartItems }));
-  };
   useEffect(() => {
-    if (success) {
-      props.history.push(`/order/${order._id}`);
-      dispatch({ type: ORDER_CREATE_RESET });
-    }
-  }, [dispatch, order, props.history, success]);
-  return (
+    dispatch(detailsOrder(orderId));
+  }, [dispatch, orderId]);
+  return loading ? (
+    <LoadingBox></LoadingBox>
+  ) : error ? (
+    <MessageBox variant="danger">{error}</MessageBox>
+  ) : (
     <div>
-      <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
+      <h1>Заказ {order._id}</h1>
       <div className="row top center">
         <div className="col-2">
           <ul>
@@ -42,15 +28,23 @@ export default function PlaceOrderScreen(props) {
                 <h2>Доставка</h2>
                 <p>
                   <strong>ФИО:</strong>
-                  <br /> {cart.shippingAdress.fullName} <br />
+                  <br /> {order.shippingAdress.fullName} <br />
                   <strong>Адрес:</strong>
-                  <br /> {cart.shippingAdress.adress},<br />
-                  {cart.shippingAdress.city},<br />{" "}
-                  {cart.shippingAdress.postalCode}
+                  <br /> {order.shippingAdress.adress},<br />
+                  {order.shippingAdress.city},<br />{" "}
+                  {order.shippingAdress.postalCode}
                   <br />
                   <strong>Номер телефона:</strong>
-                  <br /> +{cart.shippingAdress.phoneNumber}
+                  <br /> +{order.shippingAdress.phoneNumber}
                 </p>
+                <strong>Статус доставки:</strong>
+                {order.isDelivered ? (
+                  <MessageBox variant="success">
+                    Доставлено {order.deliveredAt}
+                  </MessageBox>
+                ) : (
+                  <MessageBox variant="danger">Ещё не доставлено</MessageBox>
+                )}
               </div>
             </li>
             <li>
@@ -58,8 +52,16 @@ export default function PlaceOrderScreen(props) {
                 <h2>Метод оплаты</h2>
                 <p>
                   <strong>Метод:</strong>
-                  {cart.paymentMethod}
+                  {order.paymentMethod}
                 </p>
+                <strong>Статус оплаты:</strong>
+                {order.isPaid ? (
+                  <MessageBox variant="success">
+                    Оплачено {order.paidAt}
+                  </MessageBox>
+                ) : (
+                  <MessageBox variant="danger">Ещё не оплачено</MessageBox>
+                )}
               </div>
             </li>
           </ul>
@@ -68,7 +70,7 @@ export default function PlaceOrderScreen(props) {
           <div className="card card-body card-payment">
             <h2 className="h2block">Корзина:</h2>
             <ul>
-              {cart.cartItems.map((item) => (
+              {order.orderItems.map((item) => (
                 <li key={item.product}>
                   <div className="row row-left">
                     <img
@@ -98,13 +100,13 @@ export default function PlaceOrderScreen(props) {
               <li>
                 <div className="row">
                   <div>Товары</div>
-                  <div>{cart.itemsPrice} Руб.</div>
+                  <div>{order.itemsPrice} Руб.</div>
                 </div>
               </li>
               <li>
                 <div className="row">
                   <div>Доставка</div>
-                  <div>{cart.shippingPrice} Руб.</div>
+                  <div>{order.shippingPrice} Руб.</div>
                 </div>
               </li>
               <li>
@@ -113,21 +115,10 @@ export default function PlaceOrderScreen(props) {
                     <strong>Итого:</strong>
                   </div>
                   <div>
-                    <strong>{cart.totalPrice} Руб.</strong>
+                    <strong>{order.totalPrice} Руб.</strong>
                   </div>
                 </div>
               </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={placeOrderHandler}
-                  disabled={cart.cartItems.length === 0}
-                >
-                  Оплатить заказ
-                </button>
-              </li>
-              {loading && <LoadingBox></LoadingBox>}
-              {error && <MessageBox variant='danger'>{error}</MessageBox>}
             </ul>
           </div>
         </div>

@@ -1,20 +1,20 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
-import Order from '../models/orderModel.js';
-import { isAuth } from '../utils.js';
+import express from "express";
+import expressAsyncHandler from "express-async-handler";
+import Order from "../models/orderModel.js";
+import { isAuth } from "../utils.js";
 
 const orderRouter = express.Router();
 
 orderRouter.post(
-  '/',
+  "/",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     if (req.body.orderItems.length === 0) {
-      res.status(400).send({ message: 'Корзина пуста' });
+      res.status(400).send({ message: "Корзина пуста" });
     } else {
       const order = new Order({
         orderItems: req.body.orderItems,
-        shippingAddress: req.body.shippingAddress,
+        shippingAdress: req.body.shippingAdress,
         paymentMethod: req.body.paymentMethod,
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
@@ -24,7 +24,21 @@ orderRouter.post(
       const createdOrder = await order.save();
       res
         .status(201)
-        .send({ message: 'Новый заказ создан', order: createdOrder });
+        .send({ message: "Новый заказ создан", order: createdOrder });
+    }
+  })
+);
+
+
+orderRouter.get(
+  '/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
     }
   })
 );
