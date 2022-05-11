@@ -12,7 +12,7 @@ export default function PaymentMethodScreen(props) {
   }
 
 
-  const [paymentMethod, setPaymentMethod] = useState("Robokassa");
+  const [paymentMethod, setPaymentMethod] = useState("Paypal");
 
   const dispatch = useDispatch(props);
 
@@ -30,18 +30,18 @@ export default function PaymentMethodScreen(props) {
           <h2>Метод оплаты</h2>
         </div>
         <div>
-          <div>
-            <input
-              type="radio"
-              id="robokassa"
-              value="Robokassa"
-              name="paymentMethod"
-              required
-              checked
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            ></input>
-            <label htmlFor="Robokassa">Robokassa</label>
-          </div>
+        <div>
+        <input
+          type="radio"
+          id="paypal"
+          value="PayPal"
+          name="paymentMethod"
+          required
+          checked
+          onChange={(e) => setPaymentMethod(e.target.value)}
+        ></input>
+        <label htmlFor="paypal">PayPal</label>
+      </div>
           <div>
             <input
               type="radio"

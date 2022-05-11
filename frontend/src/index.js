@@ -10,12 +10,12 @@ import history from "./history";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-
+    
     <Router history={history}>
       <Provider store={store}>
-        <React.StrictMode>
+        
           <App />
-        </React.StrictMode>
+        
       </Provider>
     </Router>
 
