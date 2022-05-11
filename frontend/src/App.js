@@ -4,6 +4,7 @@ import { Link, Route } from "react-router-dom";
 import { signout } from "./actions/userActions";
 import CartScreen from "./screens/CartScreen";
 import HomeScreen from "./screens/HomeScreen";
+import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import OrderScreen from "./screens/OrderScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
@@ -11,8 +12,6 @@ import ProductScreen from "./screens/ProductScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ShippingAdressScreen from "./screens/ShippingAdressScreen";
 import SigninScreen from "./screens/SigninScreen";
-
-
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -28,49 +27,57 @@ function App() {
   };
 
   return (
-      <div className="grid-container">
-        <header className="row">
-          <div>
-            <Link to="/" className="brand">
-              web-аптека
-            </Link>
-          </div>
-          <div>
-            <Link to="/cart">
-              Корзина
-              {cartItems.length > 0 && (
-                <span className="badge">{cartItems.length}</span>
-              )}
-            </Link>
-            {userInfo ? (
-              <div className="dropdown">
-                <Link to="#">
-                  {userInfo.name} <i className="fa fa-caret-down"></i>
-                </Link>
-                <ul className="dropdown-content">
+    <div className="grid-container">
+      <header className="row">
+        <div>
+          <Link to="/" className="brand">
+            web-аптека
+          </Link>
+        </div>
+        <div>
+          <Link to="/cart">
+            Корзина
+            {cartItems.length > 0 && (
+              <span className="badge">{cartItems.length}</span>
+            )}
+          </Link>
+          {userInfo ? (
+            <div className="dropdown">
+              <Link to="#">
+                {userInfo.name} <i className="fa fa-caret-down"></i>
+              </Link>
+              <ul className="dropdown-content">
+                <li>
+                <Link to="/orderhistory">
+                    История заказов
+                  </Link>
+                </li>
+                <li>
                   <Link to="#signout" onClick={signoutHandler}>
                     Выйти
                   </Link>
-                </ul>
-              </div>
-            ) : (
-              <Link to="/signin">Войти в аккаунт</Link>
-            )}
-          </div>
-        </header>
-        <main>
-          <Route path="/product/:id" component={ProductScreen} key={2}></Route>
-          <Route path="/cart/:id?" component={CartScreen} key={3}></Route>
-          <Route path="/signin" component={SigninScreen}></Route>
-          <Route path="/register" component={RegisterScreen}></Route>
-          <Route path="/shipping" component={ShippingAdressScreen}></Route>
-          <Route path="/payment" component={PaymentMethodScreen}></Route>
-          <Route path="/placeorder" component={PlaceOrderScreen}></Route>
-          <Route path="/order/:id" component={OrderScreen}></Route>
-          <Route path="/" component={HomeScreen} exact key={1}></Route>
-        </main>
-        <footer className="row center">Все права защищены</footer>
-      </div>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link to="/signin">Войти в аккаунт</Link>
+          )}
+        </div>
+      </header>
+      <main>
+        <Route path="/product/:id" component={ProductScreen} key={2}></Route>
+        <Route path="/cart/:id?" component={CartScreen} key={3}></Route>
+        <Route path="/signin" component={SigninScreen}></Route>
+        <Route path="/register" component={RegisterScreen}></Route>
+        <Route path="/shipping" component={ShippingAdressScreen}></Route>
+        <Route path="/payment" component={PaymentMethodScreen}></Route>
+        <Route path="/placeorder" component={PlaceOrderScreen}></Route>
+        <Route path="/order/:id" component={OrderScreen}></Route>
+        <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
+        <Route path="/" component={HomeScreen} exact key={1}></Route>
+      </main>
+      <footer className="row center">Все права защищены</footer>
+    </div>
   );
 }
 
