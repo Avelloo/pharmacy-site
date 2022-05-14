@@ -9,9 +9,14 @@ import OrderScreen from "./screens/OrderScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import ProductScreen from "./screens/ProductScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ShippingAdressScreen from "./screens/ShippingAdressScreen";
 import SigninScreen from "./screens/SigninScreen";
+import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
+import ProductListScreen from "./screens/ProductListScreen";
+import ProductEditScreen from './screens/ProductEditScreen';
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -48,9 +53,10 @@ function App() {
               </Link>
               <ul className="dropdown-content">
                 <li>
-                <Link to="/orderhistory">
-                    История заказов
-                  </Link>
+                  <Link to="/profile">Профиль</Link>
+                </li>
+                <li>
+                  <Link to="/orderhistory">История заказов</Link>
                 </li>
                 <li>
                   <Link to="#signout" onClick={signoutHandler}>
@@ -62,10 +68,36 @@ function App() {
           ) : (
             <Link to="/signin">Войти в аккаунт</Link>
           )}
+          {userInfo && userInfo.isAdmin && (
+            <div className="dropdown">
+              <Link to="#admin">
+                Админ-панель <i className="fa fa-caret-down"></i>
+              </Link>
+              <ul className="dropdown-content">
+                <li>
+                  <Link to="/dashboard">Инструментарий</Link>
+                </li>
+                <li>
+                  <Link to="/productlist">Продукты</Link>
+                </li>
+                <li>
+                  <Link to="/orderlist">Заказы</Link>
+                </li>
+                <li>
+                  <Link to="/userlist">Пользователи</Link>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </header>
       <main>
-        <Route path="/product/:id" component={ProductScreen} key={2}></Route>
+        <Route path="/product/:id" component={ProductScreen} exact></Route>
+        <Route
+          path="/product/:id/edit"
+          component={ProductEditScreen}
+          exact
+        ></Route>
         <Route path="/cart/:id?" component={CartScreen} key={3}></Route>
         <Route path="/signin" component={SigninScreen}></Route>
         <Route path="/register" component={RegisterScreen}></Route>
@@ -74,6 +106,11 @@ function App() {
         <Route path="/placeorder" component={PlaceOrderScreen}></Route>
         <Route path="/order/:id" component={OrderScreen}></Route>
         <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
+        <PrivateRoute path="/profile" component={ProfileScreen}></PrivateRoute>
+        <AdminRoute
+          path="/productlist"
+          component={ProductListScreen}
+        ></AdminRoute>
         <Route path="/" component={HomeScreen} exact key={1}></Route>
       </main>
       <footer className="row center">Все права защищены</footer>
