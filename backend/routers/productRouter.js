@@ -44,7 +44,7 @@ productRouter.post(
         description: 'sample description',
       });
       const createdProduct = await product.save();
-      res.send({ message: 'Product Created', product: createdProduct });
+      res.send({ message: 'Товар создан', product: createdProduct });
     })
   );
 
@@ -64,9 +64,9 @@ productRouter.post(
         product.countInStock = req.body.countInStock;
         product.description = req.body.description;
         const updatedProduct = await product.save();
-        res.send({ message: 'Product Updated', product: updatedProduct });
+        res.send({ message: 'Товар обновлен', product: updatedProduct });
       } else {
-        res.status(404).send({ message: 'Product Not Found' });
+        res.status(404).send({ message: 'Товар не найден' });
       }
     })
   );

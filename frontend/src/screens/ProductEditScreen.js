@@ -4,6 +4,7 @@ import { detailsProducts, updateProduct } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
+import Axios from "axios";
 
 export default function ProductEditScreen(props) {
   const productId = props.match.params.id;
@@ -41,22 +42,48 @@ export default function ProductEditScreen(props) {
       setBrand(product.brand);
       setDescription(product.description);
     }
-}, [product, dispatch, productId, successUpdate, props.history]);
+  }, [product, dispatch, productId, successUpdate, props.history]);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
-        updateProduct({
-          _id: productId,
-          name,
-          price,
-          image,
-          category,
-          brand,
-          countInStock,
-          description,
-        })
-      );
+      updateProduct({
+        _id: productId,
+        name,
+        price,
+        image,
+        category,
+        brand,
+        countInStock,
+        description,
+      })
+    );
   };
+
+  const [loadingUpload, setLoadingUpload] = useState(false);
+  const [errorUpload, setErrorUpload] = useState('');
+
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('image', file);
+    setLoadingUpload(true);
+    try {
+      const { data } = await Axios.post('/api/uploads', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      setImage(data);
+      setLoadingUpload(false);
+    } catch (error) {
+      setErrorUpload(error.message);
+      setLoadingUpload(false);
+    }
+  };
+
   return (
     <div>
       <form className="form" onSubmit={submitHandler}>
@@ -96,10 +123,23 @@ export default function ProductEditScreen(props) {
               <input
                 id="image"
                 type="text"
-                placeholder="Введите изображение"
+                placeholder="Выберите изображение"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></input>
+            </div>
+            <div>
+              <label htmlFor="imageFile">Файл изображения (230х230)</label>
+              <input
+                type="file"
+                id="imageFile"
+                label="Выберите изображение"
+                onChange={uploadFileHandler}
+              ></input>
+              {loadingUpload && <LoadingBox></LoadingBox>}
+              {errorUpload && (
+                <MessageBox variant="danger">{errorUpload}</MessageBox>
+              )}
             </div>
             <div>
               <label htmlFor="category">Категория</label>
