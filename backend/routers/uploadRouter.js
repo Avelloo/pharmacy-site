@@ -17,7 +17,7 @@ const upload = multer({ storage });
 
 uploadRouter.post('/', isAuth, upload.single('image'), (req, res) => {
   const response = `/${req.file.path}`;
-  const replace = '/frontend\\build\\';
+  const replace = '/frontend/build';
   res.send(response.replace(replace,''));
 });
 
