@@ -6,7 +6,7 @@ const uploadRouter = express.Router();
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, '/uploads/');
+    cb(null, '/images');
   },
   filename(req, file, cb) {
     cb(null, `${Date.now()}.png`);
@@ -16,7 +16,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 uploadRouter.post('/', isAuth, upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`);
+  const response = `/${req.file.path}`;
+  const replace = '/frontend\\public\\';
+  res.send('/' + response.replace(replace,''));
 });
 
 export default uploadRouter;
