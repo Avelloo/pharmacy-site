@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
@@ -14,7 +14,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build":"cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
     "start": "node backend/server.js"
   },
   "repository": {
