@@ -129,7 +129,7 @@ export default function ProductEditScreen(props) {
               ></input>
             </div>
             <div>
-              <label htmlFor="imageFile">Файл изображения (230х230)</label>
+              <label htmlFor="imageFile">Файл изображения (Соотношение сторон 1x1, png/jpg)</label>
               <input
                 type="file"
                 id="imageFile"

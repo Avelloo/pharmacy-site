@@ -188,20 +188,21 @@ button.small{
 img {
   border-radius: 0.5rem;
 
-  .small {
-    max-width: 4rem;
-    width: 100%;
-  }
 
-  .medium {
-    max-width: 29rem;
-    width: 100%;
-  }
-  .large {
-    width: 100%;
-  }
+}
+.img-small {
+  max-width: 4rem;
+  width: 100%;
 }
 
+.img-medium {
+  max-width: 29rem;
+  max-height: 230px;
+  width: 100%;
+}
+.img-large {
+  width: 100%;
+}
 /* Card */
 
 .card {

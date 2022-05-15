@@ -12,6 +12,8 @@ export default function ProductScreen(props) {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
+
+
   useEffect(() => {
     dispatch(detailsProducts(productId));
   }, [dispatch, productId]);
@@ -31,7 +33,7 @@ export default function ProductScreen(props) {
           <a href='/' onClick={() => { window.location.href = "/" }}>На главную</a>
           <div className='row top'>
             <div className='col-2'>
-              <img className='large' src={product.image} alt={product.name}></img>
+              <img className='img-large' src={product.image} alt={product.name}></img>
             </div>
 
             <div className='col-1'>

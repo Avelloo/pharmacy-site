@@ -16,7 +16,7 @@ productRouter.get('/seed', expressAsyncHandler(async (req, res) => {
     res.send({ products: createdProducts });
 }));
 
-
+ 
 productRouter.get('/:id', expressAsyncHandler(async(req, res) => {
     const product = await Product.findById(req.params.id);
     if(product){
@@ -33,15 +33,15 @@ productRouter.post(
     isAdmin,
     expressAsyncHandler(async (req, res) => {
       const product = new Product({
-        name: 'sample name ' + Date.now(),
+        name: 'Новый продукт ' + Date.now(),
         image: '/images/p1.jpg',
         price: 0,
-        category: 'sample category',
-        brand: 'sample brand',
+        category: 'Неопределенная категория',
+        brand: 'Неизвестный бренд',
         countInStock: 0,
         rating: 0,
         numReviews: 0,
-        description: 'sample description',
+        description: 'Описание',
       });
       const createdProduct = await product.save();
       res.send({ message: 'Товар создан', product: createdProduct });
@@ -71,5 +71,22 @@ productRouter.post(
     })
   );
 
+
+  productRouter.delete(
+    '/:id',
+    isAuth,
+    isAdmin,
+    expressAsyncHandler(async (req, res) => {
+      const product = await Product.findById(req.params.id);
+      if (product) {
+        const deleteProduct = await product.remove();
+        res.send({ message: 'Товар удален', product: deleteProduct });
+      } else {
+        res.status(404).send({ message: 'Товар не найден' });
+      }
+    })
+  );
+  
+  
 
 export default productRouter;
