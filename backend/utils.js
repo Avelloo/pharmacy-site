@@ -39,7 +39,7 @@ export const isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
-    res.status(401).send({ message: 'Invalid Admin Token' });
+    res.status(401).send({ message: 'Неправильный токен админа' });
   }
 };
 
@@ -47,13 +47,13 @@ export const isSeller = (req, res, next) => {
   if (req.user && req.user.isSeller) {
     next();
   } else {
-    res.status(401).send({ message: 'Invalid Seller Token' });
+    res.status(401).send({ message: 'Неправильный токен поставщика' });
   }
 };
 export const isSellerOrAdmin = (req, res, next) => {
   if (req.user && (req.user.isSeller || req.user.isAdmin)) {
     next();
   } else {
-    res.status(401).send({ message: 'Invalid Admin/Seller Token' });
+    res.status(401).send({ message: 'Неправильный токен админа\поставщика' });
   }
 };
