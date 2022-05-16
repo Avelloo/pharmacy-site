@@ -184,6 +184,13 @@ button.small{
 .row.top {
   align-items: flex-start;
 }
+.row.start {
+  justify-content: flex-start;
+}
+
+.p-1 {
+  padding: 1rem;
+}
 
 img {
   border-radius: 0.5rem;
@@ -285,6 +292,9 @@ img {
 }
 .col-2 {
   flex: -1 1 50rem;
+}
+.col-3 {
+  flex: 32 1 75rem;
 }
 
 .min-30 {
