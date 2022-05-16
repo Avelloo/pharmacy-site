@@ -1,14 +1,14 @@
-import express from "express";
-import expressAsyncHandler from "express-async-handler";
-import bcrypt from "bcryptjs";
-import data from "../data.js";
-import User from "../models/userModel.js";
+import express from 'express';
+import expressAsyncHandler from 'express-async-handler';
+import bcrypt from 'bcryptjs';
+import data from '../data.js';
+import User from '../models/userModel.js';
 import { generateToken, isAdmin, isAuth } from '../utils.js';
 
 const userRouter = express.Router();
 
 userRouter.get(
-  "/seed",
+  '/seed',
   expressAsyncHandler(async (req, res) => {
     // await User.remove({});
     const createdUsers = await User.insertMany(data.users);
@@ -17,7 +17,7 @@ userRouter.get(
 );
 
 userRouter.post(
-  "/signin",
+  '/signin',
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -33,14 +33,12 @@ userRouter.post(
         return;
       }
     }
-    res
-      .status(401)
-      .send({ message: "Неправильное имя пользователя или пароль" });
+    res.status(401).send({ message: 'Неправильный email или пароль' });
   })
 );
 
 userRouter.post(
-  "/register",
+  '/register',
   expressAsyncHandler(async (req, res) => {
     const user = new User({
       name: req.body.name,
@@ -54,8 +52,8 @@ userRouter.post(
       email: createdUser.email,
       isAdmin: createdUser.isAdmin,
       isSeller: user.isSeller,
-      token: generateToken(user),
-    })
+      token: generateToken(createdUser),
+    });
   })
 );
 
@@ -70,7 +68,6 @@ userRouter.get(
     }
   })
 );
-
 userRouter.put(
   '/profile',
   isAuth,
@@ -119,7 +116,7 @@ userRouter.delete(
     const user = await User.findById(req.params.id);
     if (user) {
       if (user.email === 'admin@admin.com') {
-        res.status(400).send({ message: 'Нельзя удалить главный аккаунт администратора' });
+        res.status(400).send({ message: 'Нельзя удалить администратора сайта' });
         return;
       }
       const deleteUser = await user.remove();
@@ -139,9 +136,8 @@ userRouter.put(
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
-      user.isSeller = Boolean(req.body.isSeller);
-      user.isAdmin = Boolean(req.body.isAdmin);
-      // user.isAdmin = req.body.isAdmin || user.isAdmin;
+      user.isSeller = req.body.isSeller || user.isSeller;
+      user.isAdmin = req.body.isAdmin || user.isAdmin;
       const updatedUser = await user.save();
       res.send({ message: 'Пользователь обновлен', user: updatedUser });
     } else {
@@ -149,7 +145,5 @@ userRouter.put(
     }
   })
 );
-
-
 
 export default userRouter;
