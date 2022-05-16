@@ -14,7 +14,7 @@ var s3 = new EasyYandexS3({
   debug: true,
 });
 
-const app = express;
+const app = express();
 const uploadRouter = express.Router();
 
 
