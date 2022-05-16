@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { detailsUser, updateUserProfile } from "../actions/userActions";
-import LoadingBox from "../components/LoadingBox";
-import MessageBox from "../components/MessageBox";
-import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { detailsUser, updateUserProfile } from '../actions/userActions';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
 
 export default function ProfileScreen() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [sellerName, setSellerName] = useState('');
+  const [sellerLogo, setSellerLogo] = useState('');
+  const [sellerDescription, setSellerDescription] = useState('');
+
   const userSignin = useSelector((state) => state.userSignin);
-  const [sellerName, setSellerName] = useState("");
-  const [sellerLogo, setSellerLogo] = useState("");
-  const [sellerDescription, setSellerDescription] = useState("");
   const { userInfo } = userSignin;
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
@@ -31,11 +32,11 @@ export default function ProfileScreen() {
     } else {
       setName(user.name);
       setEmail(user.email);
-    }
-    if (user.seller) {
-      setSellerName(user.seller.name);
-      setSellerLogo(user.seller.logo);
-      setSellerDescription(user.seller.description);
+      if (user.seller) {
+        setSellerName(user.seller.name);
+        setSellerLogo(user.seller.logo);
+        setSellerDescription(user.seller.description);
+      }
     }
   }, [dispatch, userInfo._id, user]);
   const submitHandler = (e) => {
