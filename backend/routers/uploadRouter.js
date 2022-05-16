@@ -14,13 +14,13 @@ var s3 = new EasyYandexS3({
   debug: true,
 });
 
-const app = express();
+
 const uploadRouter = express.Router();
+const upload = multer();
 
 
-app.use(multer().any());
 
-uploadRouter.post("/", isAuth, upload.single('image'), async(req, res) => {
+uploadRouter.post("/", isAuth, upload.single('image_file'), async(req, res) => {
   let buffer = req.files[0].buffer; // Буфер загруженного файла
   var upload = await s3.Upload({buffer}, '/files/'); // Загрузка в бакет
   res.send(upload); // Ответ сервера - ответ от Yandex Object Storage

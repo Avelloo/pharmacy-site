@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 
 
-
+app.use(multer().any());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 mongoose
