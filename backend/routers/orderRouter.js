@@ -7,6 +7,7 @@ const orderRouter = express.Router();
 
 orderRouter.get(
   '/',
+  isAuth,
   isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const seller = req.query.seller || '';
@@ -16,6 +17,7 @@ orderRouter.get(
       'user',
       'name'
     );
+    res.send(orders);
   })
 );
 
@@ -91,9 +93,9 @@ orderRouter.delete(
     const order = await Order.findById(req.params.id);
     if (order) {
       const deleteOrder = await order.remove();
-      res.send({ message: 'Order Deleted', order: deleteOrder });
+      res.send({ message: 'Заказ удален', order: deleteOrder });
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: 'Заказ не найден' });
     }
   })
 );
