@@ -20,7 +20,7 @@ const uploadRouter = express.Router();
 
 app.use(multer().any());
 
-uploadRouter.post("/", isAuth, async(req, res) => {
+uploadRouter.post("/", isAuth, upload.single('image'), async(req, res) => {
   let buffer = req.files[0].buffer; // Буфер загруженного файла
   var upload = await s3.Upload({buffer}, '/files/'); // Загрузка в бакет
   res.send(upload); // Ответ сервера - ответ от Yandex Object Storage
