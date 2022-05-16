@@ -1,4 +1,3 @@
-ines (89 sloc) 2.95 KB
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteOrder, listOrders } from '../actions/orderActions';
@@ -25,7 +24,7 @@ export default function OrderListScreen(props) {
     dispatch(listOrders({ seller: sellerMode ? userInfo._id : '' }));
   }, [dispatch, sellerMode, successDelete, userInfo._id]);
   const deleteHandler = (order) => {
-    if (window.confirm('Are you sure to delete?')) {
+    if (window.confirm('Вы уверены?')) {
       dispatch(deleteOrder(order._id));
     }
   };
