@@ -6,7 +6,9 @@ import MessageBox from '../components/MessageBox';
 import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
 export default function OrderListScreen(props) {
-  const sellerMode = props.match.path.indexOf('/seller') >= 0;
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const sellerMode = pathname.indexOf('/seller') >= 0;
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
   const orderDelete = useSelector((state) => state.orderDelete);
@@ -24,10 +26,10 @@ export default function OrderListScreen(props) {
     dispatch(listOrders({ seller: sellerMode ? userInfo._id : '' }));
   }, [dispatch, sellerMode, successDelete, userInfo._id]);
   const deleteHandler = (order) => {
-    if (window.confirm('Вы уверены?')) {
-        dispatch(deleteOrder(order._id));
-      }
-    };
+    if (window.confirm('Are you sure to delete?')) {
+      dispatch(deleteOrder(order._id));
+    }
+  };
   return (
     <div>
       <h1>Заказы</h1>
