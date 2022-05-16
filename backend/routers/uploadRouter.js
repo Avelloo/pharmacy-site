@@ -39,10 +39,10 @@ const storage = multer.diskStorage({
   },
 });
 
-uploadRouter.post("/", isAuth), (req, res) => {
+uploadRouter.post("/", isAuth, (req, res) => {
 
   start(req);
   res.send(response.replace(replace, ""));
-};
+});
 
 export default uploadRouter;
