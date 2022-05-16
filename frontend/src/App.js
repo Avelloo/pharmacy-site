@@ -32,7 +32,7 @@ function App() {
   const dispatch = useDispatch();
   const signoutHandler = () => {
     dispatch(signout());
-    window.forceUpdate();
+
   };
 
   return (

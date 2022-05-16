@@ -40,7 +40,7 @@ export default function UserEditScreen(props) {
     }
   }, [dispatch, props.history, successUpdate, user, userId]);
 
-  const submitHandler = (e) => {
+ const submitHandler = (e) => {
     e.preventDefault();
     // dispatch update user
     dispatch(updateUser({ _id: userId, name, email, isSeller, isAdmin }));
