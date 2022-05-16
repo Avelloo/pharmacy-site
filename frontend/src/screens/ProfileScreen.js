@@ -11,9 +11,9 @@ export default function ProfileScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const userSignin = useSelector((state) => state.userSignin);
-  const [sellerName, setSellerName] = useState('');
-  const [sellerLogo, setSellerLogo] = useState('');
-  const [sellerDescription, setSellerDescription] = useState('');
+  const [sellerName, setSellerName] = useState("");
+  const [sellerLogo, setSellerLogo] = useState("");
+  const [sellerDescription, setSellerDescription] = useState("");
   const { userInfo } = userSignin;
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
@@ -68,15 +68,15 @@ export default function ProfileScreen() {
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <>
-          {loadingUpdate && <LoadingBox></LoadingBox>}
-          {errorUpdate && (
-            <MessageBox variant="danger">{errorUpdate}</MessageBox>
-          )}
-          {successUpdate && (
-            <MessageBox variant="success">
-              Данные профиля успешно обновлены
-            </MessageBox>
-          )}
+            {loadingUpdate && <LoadingBox></LoadingBox>}
+            {errorUpdate && (
+              <MessageBox variant="danger">{errorUpdate}</MessageBox>
+            )}
+            {successUpdate && (
+              <MessageBox variant="success">
+                Данные профиля успешно обновлены
+              </MessageBox>
+            )}
             <div>
               <label htmlFor="name">Имя</label>
               <input
@@ -116,39 +116,39 @@ export default function ProfileScreen() {
               ></input>
             </div>
             {user.isSeller && (
-              <>
+              <div>
                 <h2>Seller</h2>
                 <div>
-                  <label htmlFor="sellerName">Наименование поставщика</label>
+                  <label htmlFor="sellerName">Seller Name</label>
                   <input
                     id="sellerName"
                     type="text"
-                    placeholder="Введите наименование поставщика"
+                    placeholder="Enter Seller Name"
                     value={sellerName}
                     onChange={(e) => setSellerName(e.target.value)}
                   ></input>
                 </div>
                 <div>
-                  <label htmlFor="sellerLogo">Логотип поставщика</label>
+                  <label htmlFor="sellerLogo">Seller Logo</label>
                   <input
                     id="sellerLogo"
                     type="text"
-                    placeholder="Введите логотип поставщика"
+                    placeholder="Enter Seller Logo"
                     value={sellerLogo}
                     onChange={(e) => setSellerLogo(e.target.value)}
                   ></input>
                 </div>
                 <div>
-                  <label htmlFor="sellerDescription">Описание поставщика</label>
+                  <label htmlFor="sellerDescription">Seller Description</label>
                   <input
                     id="sellerDescription"
                     type="text"
-                    placeholder="Введите описание поставщика"
+                    placeholder="Enter Seller Description"
                     value={sellerDescription}
                     onChange={(e) => setSellerDescription(e.target.value)}
                   ></input>
                 </div>
-              </>
+              </div>
             )}
             <div>
               <label />
