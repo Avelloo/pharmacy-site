@@ -51,8 +51,7 @@ export const isSeller = (req, res, next) => {
   }
 };
 export const isSellerOrAdmin = (req, res, next) => {
-  console.log('is seller:' + req.user.isSeller + ' ' + "is Admin:" + req.user.isAdmin);
-  if (req.user && (req.user.isSeller || req.user.isAdmin)) {
+  if (req.user && (req.user.userInfo.isSeller || req.user.isAdmin)) {
     next();
   } else {
     res.status(401).send({ message: 'Неправильный токен админа или поставщика' });
