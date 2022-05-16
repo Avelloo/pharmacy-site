@@ -117,39 +117,39 @@ export default function ProfileScreen() {
               ></input>
             </div>
             {user.isSeller && (
-              <div>
-                <h2>Seller</h2>
+              <>
+                <h2>Поставщик</h2>
                 <div>
-                  <label htmlFor="sellerName">Seller Name</label>
+                  <label htmlFor="sellerName">Название</label>
                   <input
                     id="sellerName"
                     type="text"
-                    placeholder="Enter Seller Name"
+                    placeholder="Введите название"
                     value={sellerName}
                     onChange={(e) => setSellerName(e.target.value)}
                   ></input>
                 </div>
                 <div>
-                  <label htmlFor="sellerLogo">Seller Logo</label>
+                  <label htmlFor="sellerLogo">Логотип</label>
                   <input
                     id="sellerLogo"
                     type="text"
-                    placeholder="Enter Seller Logo"
+                    placeholder="Введите путь к логотипу"
                     value={sellerLogo}
                     onChange={(e) => setSellerLogo(e.target.value)}
                   ></input>
                 </div>
                 <div>
-                  <label htmlFor="sellerDescription">Seller Description</label>
+                  <label htmlFor="sellerDescription">Описание</label>
                   <input
                     id="sellerDescription"
                     type="text"
-                    placeholder="Enter Seller Description"
+                    placeholder="Описание"
                     value={sellerDescription}
                     onChange={(e) => setSellerDescription(e.target.value)}
                   ></input>
                 </div>
-              </div>
+              </>
             )}
             <div>
               <label />
