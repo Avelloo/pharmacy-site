@@ -52,7 +52,7 @@ export const isSeller = (req, res, next) => {
 };
 export const isSellerOrAdmin = (req, res, next) => {
 
-  if (req.user && (req.user.isSeller || req.user.isAdmin)) {
+  if (req.user && (req.user.isAdmin || req.user.isSeller)) {
     next();
   } else {
     res.status(401).send({ message: 'Неправильный токен админа или поставщика' });
