@@ -210,6 +210,10 @@ img {
 .img-large {
   width: 100%;
 }
+
+.carousel .slide img {
+  max-width: 30rem;
+}
 /* Card */
 
 .card {

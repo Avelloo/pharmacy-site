@@ -37,7 +37,7 @@ export default function SellerScreen(props) {
               <div className="row start">
                 <div className="p-1">
                   <img
-                    className="small"
+                    className="img-small"
                     src={user.seller.logo}
                     alt={user.seller.name}
                   ></img>

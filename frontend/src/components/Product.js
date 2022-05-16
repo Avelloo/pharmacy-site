@@ -19,7 +19,7 @@ export default function Product(props) {
             numReviews={product.numReviews}
           ></Rating>
           <div className="row">
-            <div className="price">${product.price} Руб</div>
+            <div className="price">{product.price} Руб</div>
             <div>
               <Link to={`/seller/${product.seller._id}`}>
                 {product.seller.seller.name}
