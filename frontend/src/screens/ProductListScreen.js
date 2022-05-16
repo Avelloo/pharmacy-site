@@ -4,15 +4,16 @@ import {
   createProduct,
   deleteProduct,
   listProducts,
-} from '../actions/productActions';
+} from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import {
   PRODUCT_CREATE_RESET,
   PRODUCT_DELETE_RESET,
-} from '../constants/productConstants';
+} from "../constants/productConstants";
 
 export default function ProductListScreen(props) {
+  const sellerMode = props.match.path.indexOf("/seller") >= 0;
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
   const productCreate = useSelector((state) => state.productCreate);
@@ -30,20 +31,31 @@ export default function ProductListScreen(props) {
     success: successDelete,
   } = productDelete;
 
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
       props.history.push(`/product/${createdProduct._id}/edit`);
     }
-    dispatch(listProducts());
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-  }, [createdProduct, dispatch, props.history, successCreate, successDelete]);
+    dispatch(listProducts({ seller: sellerMode ? userInfo._id : "" }));
+  }, [
+    createdProduct,
+    dispatch,
+    props.history,
+    sellerMode,
+    successCreate,
+    successDelete,
+    userInfo._id,
+  ]);
 
   const deleteHandler = (product) => {
-    if (window.confirm('Вы уверены?')) {
+    if (window.confirm("Вы уверены?")) {
       dispatch(deleteProduct(product._id));
     }
   };
@@ -60,7 +72,6 @@ export default function ProductListScreen(props) {
       </div>
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
-
 
       {loadingCreate && <LoadingBox></LoadingBox>}
       {errorCreate && <MessageBox variant="danger">{errorCreate}</MessageBox>}

@@ -11,6 +11,9 @@ export default function ProfileScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const userSignin = useSelector((state) => state.userSignin);
+  const [sellerName, setSellerName] = useState('');
+  const [sellerLogo, setSellerLogo] = useState('');
+  const [sellerDescription, setSellerDescription] = useState('');
   const { userInfo } = userSignin;
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
@@ -29,13 +32,28 @@ export default function ProfileScreen() {
       setName(user.name);
       setEmail(user.email);
     }
+    if (user.seller) {
+      setSellerName(user.seller.name);
+      setSellerLogo(user.seller.logo);
+      setSellerDescription(user.seller.description);
+    }
   }, [dispatch, userInfo._id, user]);
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Пароли не совпадают");
     } else {
-      dispatch(updateUserProfile({ userId: user._id, name, email, password }));
+      dispatch(
+        updateUserProfile({
+          userId: user._id,
+          name,
+          email,
+          password,
+          sellerName,
+          sellerLogo,
+          sellerDescription,
+        })
+      );
     }
   };
   return (
@@ -97,6 +115,41 @@ export default function ProfileScreen() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               ></input>
             </div>
+            {user.isSeller && (
+              <>
+                <h2>Seller</h2>
+                <div>
+                  <label htmlFor="sellerName">Наименование поставщика</label>
+                  <input
+                    id="sellerName"
+                    type="text"
+                    placeholder="Введите наименование поставщика"
+                    value={sellerName}
+                    onChange={(e) => setSellerName(e.target.value)}
+                  ></input>
+                </div>
+                <div>
+                  <label htmlFor="sellerLogo">Логотип поставщика</label>
+                  <input
+                    id="sellerLogo"
+                    type="text"
+                    placeholder="Введите логотип поставщика"
+                    value={sellerLogo}
+                    onChange={(e) => setSellerLogo(e.target.value)}
+                  ></input>
+                </div>
+                <div>
+                  <label htmlFor="sellerDescription">Описание поставщика</label>
+                  <input
+                    id="sellerDescription"
+                    type="text"
+                    placeholder="Введите описание поставщика"
+                    value={sellerDescription}
+                    onChange={(e) => setSellerDescription(e.target.value)}
+                  ></input>
+                </div>
+              </>
+            )}
             <div>
               <label />
               <button className="primary" type="submit">
