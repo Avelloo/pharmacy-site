@@ -293,7 +293,12 @@ img {
 
 .col-1 {
   flex: 1 1 25rem;
+  ul{
+    padding-left: 30px;
+  }
 }
+
+
 .col-2 {
   flex: -1 1 50rem;
 }
