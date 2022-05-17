@@ -37,17 +37,17 @@ export default function ProductScreen(props) {
           >
             На главную
           </a>
-          <div className="row top">
-            <div className="col-2">
+          <div className="row-top">
+          <div className="row-top-container">
+          <div className="col-2">
               <img
-                className="img-large"
+                className="img-product"
                 src={product.image}
                 alt={product.name}
               ></img>
-            </div>
-
-            <div className="col-1">
-              <ul>
+              </div>
+              <div className="description_list_container">
+              <ul className="description_list">
                 <li>
                   <h1>{product.name}</h1>
                 </li>
@@ -62,6 +62,7 @@ export default function ProductScreen(props) {
                   Описание: <p>{product.description}</p>
                 </li>
               </ul>
+            </div>
             </div>
 
             <div className="col-1">

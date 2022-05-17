@@ -33,7 +33,7 @@ export default function CartScreen(props) {
   }
 
   return (
-    <div className='row top'>
+    <div className='row-top'>
       <div className='col-2'>
         <h1>Корзина</h1>
         {cartItems.length === 0 ? <MessageBox>
@@ -47,7 +47,7 @@ export default function CartScreen(props) {
                     <div>
                       <img src={item.image}
                         alt={item.name}
-                        className='small'>
+                        className='img-medium'>
                       </img>
                     </div>
                     <div className='min-30'>

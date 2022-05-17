@@ -94,7 +94,6 @@ h1 {
 
 h2 {
   font-size: 1.6rem;
-  padding: 1rem 0;
 }
 
 .h2block{
@@ -160,7 +159,11 @@ button.small{
     background-color: $hoverColor;
   }
 }
-
+.description_list_container{
+  display: inline-block;
+  margin-top: -20px;
+  margin-left: 30px;
+}
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -192,6 +195,17 @@ button.small{
   padding: 1rem;
 }
 
+.row-top{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.row-top-container{
+  display: flex;
+}
+
 img {
   border-radius: 0.5rem;
   width: 100%;
@@ -199,7 +213,7 @@ img {
 }
 .img-small {
   max-width: 4rem;
-  width: 100%;
+  width: 100%; 
 }
 
 .img-medium {
@@ -209,6 +223,10 @@ img {
 }
 .img-large {
   width: 100%;
+}
+
+.img-product{
+  width: 300px;
 }
 
 .carousel .slide img {
@@ -235,7 +253,6 @@ img {
   padding: 1rem;
 
   h2 {
-    height: 30px;
     text-overflow: ellipsis;
     overflow: hidden;
     // Addition lines for 2 line or multiline ellipsis
@@ -292,8 +309,8 @@ img {
 }
 
 .col-1 {
-  flex: 1 1 25rem;
-  ul{
+  /*flex: 1 1 25rem;*/
+ .description_list{
     padding-left: 30px;
   }
 }
@@ -361,7 +378,7 @@ img {
   margin: 0 auto;
 }
 
-@media only screen and (min-width: 780px) {
+/*@media only screen and (min-width: 780px) {
   .col-1 {
     flex: 1 1 25rem;
   }
@@ -394,7 +411,7 @@ img {
   main {
     width: 1600px;
   }
-}
+}*/
 
 /* form */
 
