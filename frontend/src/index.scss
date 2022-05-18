@@ -41,6 +41,14 @@ body {
   grid-template-rows: 5rem 1fr 5rem;
   height: 100%;
 }
+.cart-product-desc-combined{
+  min-width: 30rem;
+}
+.shadow{
+  -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
+  -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
+}
 
 header {
   grid-area: header;
@@ -81,9 +89,7 @@ footer {
   background-color: $secondaryColor;
   font-size: 0.8em;
   color: #232323;
-  -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
-  -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
-  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
+
 }
 
 /* Common */
@@ -194,9 +200,7 @@ button.small{
 .p-1 {
   padding: 1rem;
 }
-strong {
-  font-weight: bold;
-}
+
 
 .product-description{
 
@@ -208,6 +212,12 @@ strong {
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+}
+.row-top-product{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
 }
 
 .row-top-container{
@@ -243,6 +253,19 @@ img {
 /* Card */
 
 .card {
+
+  border: 0.1rem #223b4f0d solid;
+  border-radius: 0.5rem;
+  margin: 1rem;
+  -webkit-box-shadow: 1px 1px 5px 5px rgba(34, 60, 80, 0.05);
+  -moz-box-shadow: 1px 1px 5px 5px rgba(34, 60, 80, 0.05);
+  box-shadow: 1px 1px 5px 5px #223b4f0d;
+  > *{
+    outline-style: none;
+  }
+}
+
+.card-product {
 
   border: 0.1rem #223b4f0d solid;
   border-radius: 0.5rem;
@@ -333,6 +356,10 @@ img {
 
 .min-30 {
   min-width: 30rem;
+}
+.min-50 {
+  padding-left: 2rem;
+  min-width: 50rem;
 }
 
 /* Alert */

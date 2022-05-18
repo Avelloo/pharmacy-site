@@ -37,11 +37,11 @@ export default function ProductScreen(props) {
           >
             На главную
           </a>
-          <div className="row-top">
+          <div className="row-top-product">
           <div className="row-top-container">
           <div className="col-2">
               <img
-                className="img-product"
+                className="img-product shadow"
                 src={product.image}
                 alt={product.name}
               ></img>
@@ -65,8 +65,7 @@ export default function ProductScreen(props) {
             </div>
             </div>
 
-            <div className="col-1">
-              <div className="card card-body">
+              <div className="card-product card-body">
                 <ul>
                   <li>
                     Поставщик{" "}
@@ -126,7 +125,6 @@ export default function ProductScreen(props) {
                 </ul>
               </div>
             </div>
-          </div>
         </div>
       )}
     </div>
