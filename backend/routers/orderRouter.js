@@ -58,7 +58,7 @@ orderRouter.get(
     if (order) {
       res.send(order);
     } else {
-      res.status(404).send({ message: "Order Not Found" });
+      res.status(404).send({ message: "Заказ не найден" });
     }
   })
 );

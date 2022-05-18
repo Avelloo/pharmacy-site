@@ -59,7 +59,7 @@ export default function ProductScreen(props) {
                 </li>
                 <li>Цена: {product.price} Руб.</li>
                 <li>
-                  Описание: <p>{product.description}</p>
+                  <div className='product-description' dangerouslySetInnerHTML={{__html:product.description}}></div>
                 </li>
               </ul>
             </div>
