@@ -38,8 +38,9 @@ export default function CartScreen(props) {
 
   return (
     <>
+    
       <div className="row-top-product">
-        <div className="col-2">
+        <div className="col-2-cart">
           <h1 style={{ margin: "0 2rem 0 0", padding: "0", fontSize:'2rem' }}>Корзина</h1>
           {cartItems.length === 0 ? (
             <MessageBox>
