@@ -228,6 +228,7 @@ img {
   border-radius: 0.5rem;
   width: 100%;
 
+
 }
 .img-small {
   max-width: 4rem;
@@ -389,12 +390,14 @@ img {
 }
 .alert-info {
   padding: 0.3rem 1rem 0.3rem 1rem;
+  width: fit-content;
   color: #2020a0;
   background-color: #e0e0ff;
   border-radius: 0.5rem;
 }
 .alert-danger {
   margin-top: 1rem;
+  width: fit-content;
   padding: 0.6rem 1rem 0.6rem 1rem;
   color: #e25858;
   background-color: #ffe0e0e0;
@@ -402,6 +405,7 @@ img {
 }
 .alert-success{
   color: #20a020;
+  width: fit-content;
   background-color: #eeffe0;
   margin-top: 1rem;
   padding: 0.6rem 1rem 0.6rem 1rem;
@@ -605,4 +609,8 @@ aside li {
 }
 button.close-sidebar {
   padding: 0.3rem 0.8rem;
+}
+
+.active {
+  font-weight: bold;
 }

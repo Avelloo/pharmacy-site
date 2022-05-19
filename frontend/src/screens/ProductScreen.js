@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { detailsProducts } from "../actions/productActions";
+import { createReview, detailsProducts } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import Rating from "../components/Rating";
+import { PRODUCT_REVIEW_CREATE_RESET } from "../constants/productConstants";
 
 export default function ProductScreen(props) {
   const dispatch = useDispatch();
@@ -12,13 +13,42 @@ export default function ProductScreen(props) {
   const [qty, setQty] = useState(1);
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+
+  const productReviewCreate = useSelector((state) => state.productReviewCreate);
+  const {
+    loading: loadingReviewCreate,
+    error: errorReviewCreate,
+    success: successReviewCreate,
+  } = productReviewCreate;
+
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
+    if (successReviewCreate) {
+      window.alert("Отзыв опубликован");
+      setRating("");
+      setComment("");
+      dispatch({ type: PRODUCT_REVIEW_CREATE_RESET });
+    }
     dispatch(detailsProducts(productId));
-  }, [dispatch, productId]);
+  }, [dispatch, productId, successReviewCreate]);
 
   const addToCartHandler = () => {
     props.history.push(`/cart/${productId}?qty=${qty}`);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (comment && rating) {
+      dispatch(
+        createReview(productId, { rating, comment, name: userInfo.name })
+      );
+    } else {
+      alert("Пожалуйста введите отзыв и поставьте рейтинг.");
+    }
   };
 
   return (
@@ -28,42 +58,48 @@ export default function ProductScreen(props) {
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <div>
-          <a
-            href="/"
-            onClick={() => {
-              window.location.href = "/";
-            }}
-          >
-            На главную
-          </a>
-          <div className="row-top-product">
-          <div className="row-top-container">
-          <div className="col-2">
-              <img
-                className="img-product shadow"
-                src={product.image}
-                alt={product.name}
-              ></img>
+        <>
+          <div>
+            <a
+              href="/"
+              onClick={() => {
+                window.location.href = "/";
+              }}
+            >
+              На главную
+            </a>
+            <div className="row-top-product">
+              <div className="row-top-container">
+                <div className="col-2">
+                  <img
+                    className="img-product shadow"
+                    src={product.image}
+                    alt={product.name}
+                  ></img>
+                </div>
+                <div className="description_list_container">
+                  <ul className="description_list">
+                    <li>
+                      <h1>{product.name}</h1>
+                    </li>
+                    <li>
+                      <Rating
+                        rating={product.rating}
+                        numReviews={product.numReviews}
+                      ></Rating>
+                    </li>
+                    <li>Цена: {product.price} Руб.</li>
+                    <li>
+                      <div
+                        className="product-description"
+                        dangerouslySetInnerHTML={{
+                          __html: product.description,
+                        }}
+                      ></div>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="description_list_container">
-              <ul className="description_list">
-                <li>
-                  <h1>{product.name}</h1>
-                </li>
-                <li>
-                  <Rating
-                    rating={product.rating}
-                    numReviews={product.numReviews}
-                  ></Rating>
-                </li>
-                <li>Цена: {product.price} Руб.</li>
-                <li>
-                  <div className='product-description' dangerouslySetInnerHTML={{__html:product.description}}></div>
-                </li>
-              </ul>
-            </div>
-            </div>
 
               <div className="card-product card-body">
                 <ul>
@@ -124,8 +160,81 @@ export default function ProductScreen(props) {
                   )}
                 </ul>
               </div>
+              <div
+                className="shadow"
+                style={{ padding: "1rem", margin: "1rem" }}
+              >
+                <h2 id="reviews">Отзывы</h2>
+                {product.reviews.length === 0 && (
+                  <MessageBox>
+                    Ещё никто не оставил отзыв. Будьте первыми!
+                  </MessageBox>
+                )}
+                <ul>
+                  {product.reviews.map((review) => (
+                    <li key={review._id}>
+                      <strong>{review.name}</strong>
+                      <Rating rating={review.rating} caption=" "></Rating>
+                      <p>{review.createdAt.substring(0, 10)}</p>
+                      <p>{review.comment}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-        </div>
+            <div className="shadow" style={{ padding: "1rem", margin: "1rem" }}>
+              {userInfo ? (
+                <form className="form" onSubmit={submitHandler}>
+                  <div>
+                    <h2>Оставить отзыв:</h2>
+                  </div>
+                  <div>
+                    <label htmlFor="rating">Рейтинг</label>
+                    <select
+                      id="rating"
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
+                    >
+                      <option value="">Выберите...</option>
+                      <option value="1">1- Ужасно</option>
+                      <option value="2">2- Плохо</option>
+                      <option value="3">3- Хорошо</option>
+                      <option value="4">4- Очень хорошо</option>
+                      <option value="5">5- Отлично</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="comment">Отзыв</label>
+                    <textarea
+                      id="comment"
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    ></textarea>
+                  </div>
+                  <div>
+                    <label />
+                    <button className="primary" type="submit">
+                      Отправить
+                    </button>
+                  </div>
+                  <div>
+                    {loadingReviewCreate && <LoadingBox></LoadingBox>}
+                    {errorReviewCreate && (
+                      <MessageBox variant="danger">
+                        {errorReviewCreate}
+                      </MessageBox>
+                    )}
+                  </div>
+                </form>
+              ) : (
+                <MessageBox>
+                  Пожалуйста <Link to="/signin">войдите в аккаунт</Link>, чтобы
+                  оставить отзыв.
+                </MessageBox>
+              )}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

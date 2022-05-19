@@ -1,16 +1,26 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { listProducts } from "../actions/productActions";
-import LoadingBox from "../components/LoadingBox";
-import MessageBox from "../components/MessageBox";
-import Product from "../components/Product";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { listProducts } from '../actions/productActions';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+import Product from '../components/Product';
+import Rating from '../components/Rating';
+import { prices, ratings } from '../utils';
 
 export default function SearchScreen(props) {
-  const { name = "all", category = "all" } = useParams();
+  const {
+    name = 'all',
+    category = 'all',
+    min = 0,
+    max = 0,
+    rating = 0,
+    order = 'newest',
+  } = useParams();
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
+
   const productCategoryList = useSelector((state) => state.productCategoryList);
   const {
     loading: loadingCategories,
@@ -20,16 +30,28 @@ export default function SearchScreen(props) {
   useEffect(() => {
     dispatch(
       listProducts({
-        name: name !== "all" ? name : "",
-        category: category !== "all" ? category : "",
+        name: name !== 'all' ? name : '',
+        category: category !== 'all' ? category : '',
+        min,
+        max,
+        rating,
+        order,
       })
     );
-  }, [category, dispatch, name]);
+  }, [category, dispatch, max, min, name, order, rating]);
+  function declOfNum(number, titles) {  
+    let cases = [2, 0, 1, 1, 1, 2];  
+    return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];  
+}
 
   const getFilterUrl = (filter) => {
     const filterCategory = filter.category || category;
     const filterName = filter.name || name;
-    return `/search/category/${filterCategory}/name/${filterName}`;
+    const filterRating = filter.rating || rating;
+    const sortOrder = filter.order || order;
+    const filterMin = filter.min ? filter.min : filter.min === 0 ? 0 : min;
+    const filterMax = filter.max ? filter.max : filter.max === 0 ? 0 : max;
+    return `/search/category/${filterCategory}/name/${filterName}/min/${filterMin}/max/${filterMax}/rating/${filterRating}/order/${sortOrder}`;
   };
   return (
     <div>
@@ -39,30 +61,87 @@ export default function SearchScreen(props) {
         ) : error ? (
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
-          <div>Найдено {products.length} товаров.</div>
+          <div>{products.length} {declOfNum(products.length,['позиция','позиции','позиций'])}</div>
         )}
+        <div>
+          Сортировать по{' '}
+          <select
+            value={order}
+            onChange={(e) => {
+              props.history.push(getFilterUrl({ order: e.target.value }));
+            }}
+          >
+            <option value="newest">новым товарам</option>
+            <option value="lowest">цене: по возрастанию</option>
+            <option value="highest">цене: по убыванию</option>
+            <option value="toprated">отзывам</option>
+          </select>
+        </div>
       </div>
       <div className="row top">
         <div className="col-1">
-          <h3></h3>
-          {loadingCategories ? (
-            <LoadingBox></LoadingBox>
-          ) : errorCategories ? (
-            <MessageBox variant="danger">{errorCategories}</MessageBox>
-          ) : (
-            <ul>
-              {categories.map((c) => (
-                <li key={c}>
+          <h3>Фильтры</h3>
+          <h2>Категории:</h2>
+          <div>
+            {loadingCategories ? (
+              <LoadingBox></LoadingBox>
+            ) : errorCategories ? (
+              <MessageBox variant="danger">{errorCategories}</MessageBox>
+            ) : (
+              <ul>
+                <li>
                   <Link
-                    className={c === category ? "active" : ""}
-                    to={getFilterUrl({ category: c })}
+                    className={'all' === category ? 'active' : ''}
+                    to={getFilterUrl({ category: 'all' })}
                   >
-                    {c}
+                    Любая
+                  </Link>
+                </li>
+                {categories.map((c) => (
+                  <li key={c}>
+                    <Link
+                      className={c === category ? 'active' : ''}
+                      to={getFilterUrl({ category: c })}
+                    >
+                      {c}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div>
+            <h3>Цена</h3>
+            <ul>
+              {prices.map((p) => (
+                <li key={p.name}>
+                  <Link
+                    to={getFilterUrl({ min: p.min, max: p.max })}
+                    className={
+                      `${p.min}-${p.max}` === `${min}-${max}` ? 'active' : ''
+                    }
+                  >
+                    {p.name}
                   </Link>
                 </li>
               ))}
             </ul>
-          )}
+          </div>
+          <div>
+            <h3>Отзывы</h3>
+            <ul>
+              {ratings.map((r) => (
+                <li key={r.name}>
+                  <Link
+                    to={getFilterUrl({ rating: r.rating })}
+                    className={`${r.rating}` === `${rating}` ? 'active' : ''}
+                  >
+                    <Rating caption={' и выше'} rating={r.rating}></Rating>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className="col-3">
           {loading ? (
@@ -72,7 +151,7 @@ export default function SearchScreen(props) {
           ) : (
             <>
               {products.length === 0 && (
-                <MessageBox>Товары не найдены</MessageBox>
+                <MessageBox>Товаров не найдено</MessageBox>
               )}
               <div className="row center">
                 {products.map((product) => (
