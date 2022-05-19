@@ -9,7 +9,7 @@ export default function SearchBox(props) {
   return (
     <form className="search" onSubmit={submitHandler}>
       <div className="row">
-        <input
+        <input style={{backgroundColor: '#457b9d0f', width:'fit-content'}}
           type="text"
           name="q"
           id="q"

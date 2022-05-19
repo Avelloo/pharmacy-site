@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
-import { listProducts } from '../actions/productActions';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import Product from '../components/Product';
-import Rating from '../components/Rating';
-import { prices, ratings } from '../utils';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { listProducts } from "../actions/productActions";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import Product from "../components/Product";
+import Rating from "../components/Rating";
+import { prices, ratings } from "../utils";
 
 export default function SearchScreen(props) {
   const {
-    name = 'all',
-    category = 'all',
+    name = "all",
+    category = "all",
     min = 0,
     max = 0,
     rating = 0,
-    order = 'newest',
+    order = "newest",
   } = useParams();
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
@@ -30,8 +30,8 @@ export default function SearchScreen(props) {
   useEffect(() => {
     dispatch(
       listProducts({
-        name: name !== 'all' ? name : '',
-        category: category !== 'all' ? category : '',
+        name: name !== "all" ? name : "",
+        category: category !== "all" ? category : "",
         min,
         max,
         rating,
@@ -39,10 +39,14 @@ export default function SearchScreen(props) {
       })
     );
   }, [category, dispatch, max, min, name, order, rating]);
-  function declOfNum(number, titles) {  
-    let cases = [2, 0, 1, 1, 1, 2];  
-    return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];  
-}
+  function declOfNum(number, titles) {
+    let cases = [2, 0, 1, 1, 1, 2];
+    return titles[
+      number % 100 > 4 && number % 100 < 20
+        ? 2
+        : cases[number % 10 < 5 ? number % 10 : 5]
+    ];
+  }
 
   const getFilterUrl = (filter) => {
     const filterCategory = filter.category || category;
@@ -55,31 +59,37 @@ export default function SearchScreen(props) {
   };
   return (
     <div>
-      <div className="row">
-        {loading ? (
-          <LoadingBox></LoadingBox>
-        ) : error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          <div>{products.length} {declOfNum(products.length,['позиция','позиции','позиций'])}</div>
-        )}
-        <div>
-          Сортировать по{' '}
-          <select
-            value={order}
-            onChange={(e) => {
-              props.history.push(getFilterUrl({ order: e.target.value }));
-            }}
-          >
-            <option value="newest">новым товарам</option>
-            <option value="lowest">цене: по возрастанию</option>
-            <option value="highest">цене: по убыванию</option>
-            <option value="toprated">отзывам</option>
-          </select>
-        </div>
-      </div>
+      <div className="row"></div>
       <div className="row top">
-        <div className="col-1">
+        <div
+          className="col-1 shadow"
+          style={{ padding: "2rem", }}
+        >
+          <div>
+            Сортировать по{" "}
+            <select
+              value={order}
+              onChange={(e) => {
+                props.history.push(getFilterUrl({ order: e.target.value }));
+              }}
+            >
+              <option value="newest">новым товарам</option>
+              <option value="lowest">цене: по возрастанию</option>
+              <option value="highest">цене: по убыванию</option>
+              <option value="toprated">отзывам</option>
+            </select>
+          </div>
+          
+          {loading ? (
+            <LoadingBox></LoadingBox>
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <div style={{ paddingTop: "1rem"}}>{declOfNum(products.length, ["Найдена", "Найдено", "Найдено"])}{" "}
+              {products.length}{" "}
+              {declOfNum(products.length, ["позиция", "позиции", "позиций"])}
+            </div>
+          )}
           <h3>Фильтры</h3>
           <h2>Категории:</h2>
           <div>
@@ -91,8 +101,8 @@ export default function SearchScreen(props) {
               <ul>
                 <li>
                   <Link
-                    className={'all' === category ? 'active' : ''}
-                    to={getFilterUrl({ category: 'all' })}
+                    className={"all" === category ? "active" : ""}
+                    to={getFilterUrl({ category: "all" })}
                   >
                     Любая
                   </Link>
@@ -100,7 +110,7 @@ export default function SearchScreen(props) {
                 {categories.map((c) => (
                   <li key={c}>
                     <Link
-                      className={c === category ? 'active' : ''}
+                      className={c === category ? "active" : ""}
                       to={getFilterUrl({ category: c })}
                     >
                       {c}
@@ -118,7 +128,7 @@ export default function SearchScreen(props) {
                   <Link
                     to={getFilterUrl({ min: p.min, max: p.max })}
                     className={
-                      `${p.min}-${p.max}` === `${min}-${max}` ? 'active' : ''
+                      `${p.min}-${p.max}` === `${min}-${max}` ? "active" : ""
                     }
                   >
                     {p.name}
@@ -134,9 +144,9 @@ export default function SearchScreen(props) {
                 <li key={r.name}>
                   <Link
                     to={getFilterUrl({ rating: r.rating })}
-                    className={`${r.rating}` === `${rating}` ? 'active' : ''}
+                    className={`${r.rating}` === `${rating}` ? "active" : ""}
                   >
-                    <Rating caption={' и выше'} rating={r.rating}></Rating>
+                    <Rating caption={" и выше"} rating={r.rating}></Rating>
                   </Link>
                 </li>
               ))}

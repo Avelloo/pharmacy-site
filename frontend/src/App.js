@@ -71,7 +71,7 @@ function App() {
             render={({ history }) => <SearchBox history={history}></SearchBox>}
           ></Route>
         </div>
-        <div>
+        <div className="row center header">
           <Link to="/cart">
             Корзина
             {cartItems.length > 0 && (
