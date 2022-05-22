@@ -4,13 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAdress } from "../actions/cartActions";
 
 export default function ShippingAdressScreen(props) {
-    const userSignin = useSelector((state) => state.userSignin);
-    const {userInfo} = userSignin;
-    const cart = useSelector(state => state.cart);
-    const {shippingAdress} = cart;
-    if(!userInfo){
-        props.history.push('/signin');
-    }
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+  const cart = useSelector((state) => state.cart);
+  const { shippingAdress } = cart;
+  const [lat, setLat] = useState(shippingAdress.lat);
+  const [lng, setLng] = useState(shippingAdress.lng);
+  const userAddressMap = useSelector((state) => state.userAddressMap);
+  const { address: addressMap } = userAddressMap;
+  if (!userInfo) {
+    props.history.push("/signin");
+  }
   const [fullName, setFullName] = useState(shippingAdress.fullName);
   const [adress, setAdress] = useState(shippingAdress.adress);
   const [city, setCity] = useState(shippingAdress.city);
@@ -18,19 +22,54 @@ export default function ShippingAdressScreen(props) {
   const [phoneNumber, setPhoneNumber] = useState(shippingAdress.phoneNumber);
 
   const dispatch = useDispatch();
-
-  const subminHandler = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(
-      saveShippingAdress({ fullName, adress, city, postalCode, phoneNumber })
-    );
-    props.history.push('/payment');
+    const newLat = addressMap ? addressMap.lat : lat;
+    const newLng = addressMap ? addressMap.lng : lng;
+    if (addressMap) {
+      setLat(addressMap.lat);
+      setLng(addressMap.lng);
+    }
+    let moveOn = true;
+    if (!newLat || !newLng) {
+      moveOn = window.confirm(
+        'Вы не выбрали место на карте. Продолжить?'
+      );
+    }
+    if (moveOn) {
+      dispatch(
+        saveShippingAdress({
+          fullName,
+          adress,
+          city,
+          postalCode,
+          phoneNumber,
+          lat: newLat,
+          lng: newLng,
+        })
+      );
+      props.history.push('/payment');
+    }
   };
 
+  const chooseOnMap = () => {
+    dispatch(
+      saveShippingAdress({
+        fullName,
+        adress,
+        city,
+        postalCode,
+        phoneNumber,
+        lat,
+        lng,
+      })
+    );
+    props.history.push('/map');
+  };
   return (
     <div>
       <CheckoutSteps step1 step2></CheckoutSteps>
-      <form className="form" onSubmit={subminHandler}>
+      <form className="form" onSubmit={submitHandler}>
         <div>
           <h2>Доставка</h2>
         </div>
@@ -89,6 +128,12 @@ export default function ShippingAdressScreen(props) {
             required
           ></input>
         </div>
+        <div>
+        <label htmlFor="chooseOnMap">Location</label>
+        <button type="button" onClick={chooseOnMap}>
+          Выбрать на карте
+        </button>
+      </div>
         <div>
           <label />
           <button className="primary" type="submit">

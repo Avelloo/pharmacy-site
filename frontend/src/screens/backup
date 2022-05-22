@@ -1,0 +1,82 @@
+import React, { Component } from "react";
+import {
+  YMaps,
+  Map,
+  ZoomControl,
+  FullscreenControl,
+  SearchControl,
+  GeolocationControl,
+  Placemark,
+  Button,
+} from "react-yandex-maps";
+
+export default class YMap extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      coords: [],
+      mapState: {
+        center: [55.795747, 49.112328],
+        zoom: 13,
+      },
+      yandex_key: "0d6a5158-ba82-480c-84e8-c30771d0ae5b",
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.oldCoords !== this.props.oldCoords) {
+      this.setState({ coords: this.props.oldCoords });
+    }
+  }
+  onMapClick = (e) => {
+    const coords = e.get("coords");
+    this.setState({ coords: coords });
+    console.log(coords);
+  };
+
+  setCoords(coords) {
+    return coords;
+  }
+  
+  
+  submitHandler() {}
+  geocode(ymaps) {
+    ymaps
+      .geocode("Мытищи")
+      .then((result) =>
+        this.setState({
+          coordinates: result.geoObjects.get(0).geometry.getCoordinates(),
+        })
+      );
+  }
+  render() {
+    return (
+      <>
+        <div>
+          <YMaps
+            query={{ apikey: this.state.yandex_key }}
+            onApiAvaliable={(ymaps) => this.geocode(ymaps)}
+          >
+            <Map
+              modules={["Placemark", "geocode", "geoObject.addon.balloon"]}
+              onClick={this.onMapClick}
+              state={this.state.mapState}
+              width="100%"
+              height="600px"
+            >
+              {this.state.coords ? (
+                <Placemark geometry={this.state.coords} />
+              ) : null}
+              {this.state.coords ? this.setCoords(this.state.coords) : null}
+              <ZoomControl />
+              <FullscreenControl />
+              <SearchControl />
+              <GeolocationControl />
+            </Map>
+          </YMaps>
+        </div>
+        <button style={{display:'flex'}} onClick={this.submitHandler}>Подтвердить</button>
+      </>
+    );
+  }
+}

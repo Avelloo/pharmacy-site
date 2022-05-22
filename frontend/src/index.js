@@ -8,6 +8,7 @@ import store from "./store";
 import { Router } from "react-router-dom";
 import history from "./history";
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     
