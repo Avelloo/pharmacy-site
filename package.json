@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cd backend && npm install --legacy-peer-deps && cd ../frontend && npm install --legacy-peer-deps && npm run build",
-    "start": "node --experimental-modules backend/server.js"
+    "start": "nodemon --watch backend --exec node --experimental-modules backend/server.js"
   },
   "repository": {
     "type": "git",

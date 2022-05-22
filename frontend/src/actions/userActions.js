@@ -21,18 +21,19 @@ import {
   USER_DELETE_FAIL,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
-  USER_TOPSELLERS_LIST_REQUEST,
-  USER_TOPSELLERS_LIST_SUCCESS,
-  USER_TOPSELLERS_LIST_FAIL,
+  WORKER_REGISTER_SUCCESS,
+  WORKER_REGISTER_REQUEST,
+  WORKER_REGISTER_FAIL,
 } from "../constants/userConstants";
 
-export const register = (name, email, password) => async (dispatch) => {
-  dispatch({ type: USER_REGISTER_REQUEST, payload: { email, password } });
+export const register = (name, email, password, isWorker) => async (dispatch) => {
+  dispatch({ type: USER_REGISTER_REQUEST, payload: { email, password, isWorker } });
   try {
     const { data } = await Axios.post("/api/users/register", {
       name,
       email,
       password,
+      isWorker
     });
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
@@ -40,6 +41,26 @@ export const register = (name, email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const workerRegister = (name, email, password, isWorker) => async (dispatch) => {
+  dispatch({ type: WORKER_REGISTER_REQUEST, payload: { email, password, isWorker } });
+  try {
+    const { data } = await Axios.post("/api/users/register", {
+      name,
+      email,
+      password,
+      isWorker
+    });
+    dispatch({ type: WORKER_REGISTER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: WORKER_REGISTER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -171,16 +192,3 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
   }
 };
 
-export const listTopSellers = () => async (dispatch) => {
-  dispatch({ type: USER_TOPSELLERS_LIST_REQUEST });
-  try {
-    const { data } = await Axios.get('/api/users/top-sellers');
-    dispatch({ type: USER_TOPSELLERS_LIST_SUCCESS, payload: data });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({ type: USER_TOPSELLERS_LIST_FAIL, payload: message });
-  }
-};

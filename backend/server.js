@@ -8,6 +8,9 @@ import orderRouter from "./routers/orderRouter.js";
 import uploadRouter from "./routers/uploadRouter.js";
 import seedRouter from "./routers/seedRouter.js";
 import multer from "multer";
+import categoryRouter from "./routers/categoryRouter.js";
+import formReleaseRouter from "./routers/formReleaseRouter.js";
+import providerRouter from "./routers/providerRouter.js";
 
 
 
@@ -34,6 +37,9 @@ app.use("/api/users", userRouter);
 app.use("/api/seed", seedRouter);
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/category", categoryRouter);
+app.use("/api/formRelease", formReleaseRouter);
+app.use("/api/provider", providerRouter);
 app.get("/api/config/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });

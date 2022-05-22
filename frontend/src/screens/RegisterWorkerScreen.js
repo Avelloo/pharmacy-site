@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { register } from "../actions/userActions";
+import { register, workerRegister } from "../actions/userActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 
-export default function RegisterScreen(props) {
+export default function RegisterWorkerScreen(props) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectInUrl ? redirectInUrl : '/';
+  const redirectInUrl = new URLSearchParams(search).get("redirect");
+  const redirect = redirectInUrl ? redirectInUrl : "/";
 
   const dispatch = useDispatch();
 
@@ -22,11 +22,12 @@ export default function RegisterScreen(props) {
     if (password !== confirmPassword) {
       alert("Пароли не совпадают");
     } else {
-      dispatch(register(name, email, password, isWorker));
+      dispatch(workerRegister(name, email, password, isWorker));
+      props.history.push('/workers');
     }
   };
 
-  const isWorker = false;
+  const isWorker = true;
   const userRegister = useSelector((state) => state.userRegister);
   const { userInfo, loading, error } = userRegister;
 
@@ -40,7 +41,7 @@ export default function RegisterScreen(props) {
     <div>
       <form className="form" onSubmit={submitHandler}>
         <div>
-          <h1>Регистрация</h1>
+          <h1>Регистрация нового сотрудника</h1>
         </div>
         {loading && <LoadingBox></LoadingBox>}
         {error && <MessageBox variant="danger">{error}</MessageBox>}
@@ -49,7 +50,7 @@ export default function RegisterScreen(props) {
           <input
             type="email"
             id="email"
-            placeholder="Введите адрес эл. почты"
+            placeholder="Введите адрес эл. почты сотрудника"
             required
             onChange={(e) => setEmail(e.target.value)}
           ></input>
@@ -59,7 +60,7 @@ export default function RegisterScreen(props) {
           <input
             type="text"
             id="name"
-            placeholder="Введите ФИО"
+            placeholder="Введите ФИО сотрудника"
             required
             onChange={(e) => setName(e.target.value)}
           ></input>
@@ -69,7 +70,7 @@ export default function RegisterScreen(props) {
           <input
             type="password"
             id="password"
-            placeholder="Введите пароль"
+            placeholder="Введите пароль сотрудника"
             required
             onChange={(e) => setPassword(e.target.value)}
           ></input>
@@ -87,15 +88,8 @@ export default function RegisterScreen(props) {
         <div>
           <label />
           <button className="primary" type="submit">
-            Создать аккаунт
+            Создать аккаунт сотрудника
           </button>
-        </div>
-        <div>
-          <label />
-          <div>
-            Уже есть аккаунт?{" "}
-            <Link to={`/signin?redirect=${redirect}`}>Войти</Link>
-          </div>
         </div>
       </form>
     </div>

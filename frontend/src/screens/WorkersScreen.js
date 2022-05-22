@@ -5,7 +5,7 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { USER_DETAILS_RESET } from "../constants/userConstants";
 
-export default function UserListScreen(props) {
+export default function WorkersScreen(props) {
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
@@ -28,13 +28,28 @@ export default function UserListScreen(props) {
       dispatch(deleteUser(user._id));
     }
   };
+
+  const clickHandler = () =>{
+    props.history.push('/registerWorker')
+  }
+
   return (
     <div>
-      <h1>Управление клиентами</h1>
+      <div>
+        <h1>Управление сотрудниками</h1>
+      </div>
+      <button
+        style={{ margin: "0 auto", width: "100%", borderRadius: "0" }}
+        type="button"
+        className=""
+        onClick={clickHandler}
+      >
+        Зарегистрировать нового сотрудника
+      </button>
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
       {successDelete && (
-        <MessageBox variant="success">Клиент удален успешно</MessageBox>
+        <MessageBox variant="success">Сотрудник удален успешно</MessageBox>
       )}
       {loading ? (
         <LoadingBox></LoadingBox>
@@ -53,7 +68,7 @@ export default function UserListScreen(props) {
           <tbody>
             {users
               .filter(
-                (generalUser) => !generalUser.isAdmin && !generalUser.isWorker
+                (generalUser) => !generalUser.isAdmin && generalUser.isWorker
               )
               .map((user) => (
                 <tr key={user._id}>

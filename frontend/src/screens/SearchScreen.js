@@ -108,12 +108,12 @@ export default function SearchScreen(props) {
                   </Link>
                 </li>
                 {categories.map((c) => (
-                  <li key={c}>
+                  <li key={c.name}>
                     <Link
-                      className={c === category ? "active" : ""}
-                      to={getFilterUrl({ category: c })}
+                      className={c.name === category ? "active" : ""}
+                      to={getFilterUrl({ category: c.name })}
                     >
-                      {c}
+                      {c.name}
                     </Link>
                   </li>
                 ))}

@@ -29,6 +29,9 @@ import {
   USER_DELETE_RESET,
   USER_DELETE_SUCCESS,
   USER_ADDRESS_MAP_CONFIRM,
+  WORKER_REGISTER_REQUEST,
+  WORKER_REGISTER_SUCCESS,
+  WORKER_REGISTER_FAIL,
   } from '../constants/userConstants';
   
   export const userRegisterReducer = (state = {}, action) => {
@@ -38,6 +41,18 @@ import {
       case USER_REGISTER_SUCCESS:
         return { loading: false, userInfo: action.payload };
       case USER_REGISTER_FAIL:
+        return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+  };
+  export const workerRegisterReducer = (state = {}, action) => {
+    switch (action.type) {
+      case WORKER_REGISTER_REQUEST:
+        return { loading: true };
+      case WORKER_REGISTER_SUCCESS:
+        return { loading: false, userInfo: action.payload };
+      case WORKER_REGISTER_FAIL:
         return { loading: false, error: action.payload };
       default:
         return state;

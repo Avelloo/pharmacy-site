@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const reviewSchema = new mongoose.Schema(
     {
       name: { type: String, required: true },
@@ -11,12 +12,14 @@ const reviewSchema = new mongoose.Schema(
     }
   );
 
+
+
 const productSchema = new mongoose.Schema(
     {
         name:{type: String, required: true, unique:true},
-        seller: { type: mongoose.Schema.Types.ObjectID, ref: 'User' },
+        provider: {type: String, required: true},
+        formRelease: {type: String, required: true},
         image:{type: String, required: true},
-        brand:{type: String, required: true},
         category:{type: String, required: true},
         description:{type: String, required: true},
         price:{type: Number, required: true},

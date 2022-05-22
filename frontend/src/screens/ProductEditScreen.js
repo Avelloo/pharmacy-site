@@ -13,7 +13,8 @@ export default function ProductEditScreen(props) {
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
-  const [brand, setBrand] = useState("");
+  const [provider, setProvider] = useState("");
+  const [formRelease, setFormRelease] = useState("");
   const [description, setDescription] = useState("");
 
   const productDetails = useSelector((state) => state.productDetails);
@@ -39,10 +40,12 @@ export default function ProductEditScreen(props) {
       setImage(product.image);
       setCategory(product.category);
       setCountInStock(product.countInStock);
-      setBrand(product.brand);
+      setProvider(product.provider);
+      setFormRelease(product.formRelease);
       setDescription(product.description);
     }
   }, [product, dispatch, productId, successUpdate, props.history]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
@@ -52,27 +55,28 @@ export default function ProductEditScreen(props) {
         price,
         image,
         category,
-        brand,
         countInStock,
         description,
+        provider,
+        formRelease,
       })
     );
   };
 
   const [loadingUpload, setLoadingUpload] = useState(false);
-  const [errorUpload, setErrorUpload] = useState('');
+  const [errorUpload, setErrorUpload] = useState("");
 
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
-    bodyFormData.append('image', file);
+    bodyFormData.append("image", file);
     setLoadingUpload(true);
     try {
-      const { data } = await Axios.post('/api/uploads', bodyFormData, {
+      const { data } = await Axios.post("/api/uploads", bodyFormData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${userInfo.token}`,
         },
       });
@@ -129,7 +133,9 @@ export default function ProductEditScreen(props) {
               ></input>
             </div>
             <div>
-              <label htmlFor="imageFile">Файл изображения (Соотношение сторон 1x1, png/jpg)</label>
+              <label htmlFor="imageFile">
+                Файл изображения (Соотношение сторон 1x1, png/jpg)
+              </label>
               <input
                 type="file"
                 id="imageFile"
@@ -143,23 +149,24 @@ export default function ProductEditScreen(props) {
             </div>
             <div>
               <label htmlFor="category">Категория</label>
-              <input
-                id="category"
-                type="text"
-                placeholder="Введите категорию"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              ></input>
+              <select onChange={(e) => setCategory(e.target.value)}>
+                <option select value="">Выберите категорию</option>
+                <option value="Витамины">Витамины</option>
+              </select>
             </div>
             <div>
-              <label htmlFor="brand">Бренд</label>
-              <input
-                id="brand"
-                type="text"
-                placeholder="Введите бренд"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-              ></input>
+              <label htmlFor="category">Форма выпуска</label>
+              <select onChange={(e) => setFormRelease(e.target.value)}>
+                <option select value="">Выберите форму выпуска</option>
+                <option value="Таблетки">Таблетки</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="provider">Поставщик</label>
+              <select id='provider' onChange={(e) => setProvider(e.target.value)}>
+                <option value="">Выберите поставщика</option>
+                <option value="Бест-фарма">Бест-фарма</option>
+              </select>
             </div>
             <div>
               <label htmlFor="countInStock">Кол-во в наличии</label>

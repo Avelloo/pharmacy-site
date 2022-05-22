@@ -7,7 +7,7 @@ export const generateToken = (user) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      isSeller: user.isSeller,
+      isWorker: user.isWorker,
     },
     process.env.JWT_SECRET || "somethingsecret",
     { expiresIn: "30d" }
@@ -43,18 +43,20 @@ export const isAdmin = (req, res, next) => {
   }
 };
 
-export const isSeller = (req, res, next) => {
-  if (req.user && req.user.isSeller) {
+export const isWorker = (req, res, next) => {
+
+  if (req.user && req.user.isWorker) {
     next();
   } else {
-    res.status(401).send({ message: 'Неправильный токен поставщика' });
+    res.status(401).send({ message: 'Неправильный токен сотрудника' });
   }
 };
-export const isSellerOrAdmin = (req, res, next) => {
-  if (req.user && (req.user.isSeller || req.user.isAdmin)) {
+export const isWorkerOrAdmin = (req, res, next) => {
+  console.log('Проверка прав доступа: ' + req.user.isWorker +' <==worker  admin==> '+ req.user.isAdmin);
+  if (req.user && (req.user.isWorker || req.user.isAdmin)) {
     next();
   } else {
-    res.status(401).send({ message: 'Неправильный токен администратора или поставщика' });
+    res.status(401).send({ message: 'Неправильный токен администратора или сотрудника' });
   }
 };
 

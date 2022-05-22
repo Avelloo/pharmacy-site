@@ -2,7 +2,7 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import data from "../data.js";
 import Product from "../models/productModel.js";
-import { isAdmin, isAuth, isSellerOrAdmin } from "../utils.js";
+import { isAdmin, isAuth, isWorkerOrAdmin } from "../utils.js";
 
 const productRouter = express.Router();
 
@@ -11,7 +11,7 @@ productRouter.get(
   expressAsyncHandler(async (req, res) => {
     const name = req.query.name || '';
     const category = req.query.category || '';
-    const seller = req.query.seller || "";
+    const provider = req.query.provider || "";
     const order = req.query.order || '';
     const min =
       req.query.min && Number(req.query.min) !== 0 ? Number(req.query.min) : 0;
@@ -22,7 +22,7 @@ productRouter.get(
         ? Number(req.query.rating)
         : 0;
     const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {};
-    const sellerFilter = seller ? { seller } : {};
+    const providerFilter = provider ? { provider } : {};
     const categoryFilter = category ? { category } : {};
     const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {};
     const ratingFilter = rating ? { rating: { $gte: rating } } : {};
@@ -37,13 +37,13 @@ productRouter.get(
 
 
     const products = await Product.find({
-      ...sellerFilter,
+      ...providerFilter,
       ...nameFilter,
       ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     })
-      .populate('seller', 'seller.name seller.logo')
+      .populate('provider', 'provider.name provider.phoneNumber')
       .sort(sortOrder);
     res.send(products);
   })
@@ -68,8 +68,7 @@ productRouter.get(
   "/:id",
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id).populate(
-      'seller',
-      'seller.name seller.logo seller.rating seller.numReviews'
+      'provider', 'provider.name, provider.phoneNumber'
     );
     if (product) {
       res.send(product);
@@ -82,15 +81,15 @@ productRouter.get(
 productRouter.post(
   "/",
   isAuth,
-  isSellerOrAdmin,
+  isWorkerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = new Product({
       name: "Новый продукт " + Date.now(),
-      seller: req.user._id,
+      provider: "Неопределенный поставщик",
       image: "/images/p1.jpg",
       price: 0,
       category: "Неопределенная категория",
-      brand: "Неизвестный бренд",
+      formRelease: "Неопределенная форма выпуска",
       countInStock: 0,
       rating: 0,
       numReviews: 0,
@@ -104,7 +103,7 @@ productRouter.post(
 productRouter.put(
   "/:id",
   isAuth,
-  isSellerOrAdmin,
+  isWorkerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
     const product = await Product.findById(productId);
@@ -113,7 +112,8 @@ productRouter.put(
       product.price = req.body.price;
       product.image = req.body.image;
       product.category = req.body.category;
-      product.brand = req.body.brand;
+      product.provider = req.body.provider;
+      product.formRelease = req.body.formRelease;
       product.countInStock = req.body.countInStock;
       product.description = req.body.description;
       const updatedProduct = await product.save();
@@ -127,7 +127,7 @@ productRouter.put(
 productRouter.delete(
   "/:id",
   isAuth,
-  isSellerOrAdmin,
+  isWorkerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {

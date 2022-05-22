@@ -1,75 +1,77 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createProduct,
-  deleteProduct,
-  listProducts,
+  listProductCategories,
+  deleteCategory,
+  createCategory,
 } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import {
-  PRODUCT_CREATE_RESET,
-  PRODUCT_DELETE_RESET,
+
+  PRODUCT_FORMRELEASE_CREATE_RESET,
+  PRODUCT_FORMRELEASE_DELETE_RESET,
+
 } from "../constants/productConstants";
 
-export default function ProductListScreen(props) {
-  const sellerMode = props.match.path.indexOf("/seller") >= 0;
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
-  const productCreate = useSelector((state) => state.productCreate);
+export default function CategoryScreen(props) {
+  const categoryList = useSelector((state) => state.productCategoryList);
+  const { loading, error, categories } = categoryList;
+
+  const categoryDelete = useSelector(
+    (state) => state.productCategoryDelete
+  );
+  const categoryCreate = useSelector(
+    (state) => state.productCategoryCreate
+  );
   const {
     loading: loadingCreate,
     error: errorCreate,
     success: successCreate,
-    product: createdProduct,
-  } = productCreate;
-
-  const productDelete = useSelector((state) => state.productDelete);
+    category: createdCategory,
+  } = categoryCreate;
   const {
     loading: loadingDelete,
     error: errorDelete,
     success: successDelete,
-  } = productDelete;
-
-  const userSignin = useSelector((state) => state.userSignin);
-  const { userInfo } = userSignin;
+  } = categoryDelete;
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (successCreate) {
-      dispatch({ type: PRODUCT_CREATE_RESET });
-      props.history.push(`/product/${createdProduct._id}/edit`);
+      dispatch({ type: PRODUCT_FORMRELEASE_CREATE_RESET });
+      props.history.push(`/category/${createdCategory._id}/edit`);
+      window.location.reload(false);
     }
     if (successDelete) {
-      dispatch({ type: PRODUCT_DELETE_RESET });
+      dispatch({ type: PRODUCT_FORMRELEASE_DELETE_RESET });
+      window.location.reload(false);
     }
-    dispatch(listProducts({ seller: sellerMode ? userInfo._id : "" }));
+    dispatch(listProductCategories());
   }, [
-    createdProduct,
+    createdCategory,
     dispatch,
     props.history,
-    sellerMode,
     successCreate,
     successDelete,
-    userInfo._id,
   ]);
 
-  const deleteHandler = (product) => {
+  const clickHandler = () => {
+    dispatch(createCategory());
+  };
+  const deleteHandler = (category) => {
     if (window.confirm("Вы уверены?")) {
-      dispatch(deleteProduct(product._id));
+      dispatch(deleteCategory(category._id));
     }
   };
-  const createHandler = () => {
-    dispatch(createProduct());
-  };
+
   return (
     <div>
-      <div className="row">
-        <h1>Товары</h1>
+      <div className="">
+        <h1>Управление категориями</h1>
+        
       </div>
-      <button style={{margin:'0 auto', width:'100%', borderRadius:'0'}} type="button" className="" onClick={createHandler}>
-        Создать товар
-      </button>
+      
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
 
@@ -84,27 +86,21 @@ export default function ProductListScreen(props) {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Наименование</th>
-              <th>Цена</th>
-              <th>Категория</th>
-              <th>Бренд</th>
+              <th>Наименование категории</th>
               <th>Действия</th>
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product._id}>
-                <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>{product.price}</td>
-                <td>{product.category}</td>
-                <td>{product.brand}</td>
+            {categories.map((category) => (
+              <tr key={category._id}>
+                <td>{category._id}</td>
+                <td>{category.name}</td>
                 <td>
                   <button
                     type="button"
                     className="small"
                     onClick={() =>
-                      props.history.push(`/product/${product._id}/edit`)
+                      props.history.push(`/category/${category._id}/edit`)
                     }
                   >
                     Редактировать
@@ -112,7 +108,7 @@ export default function ProductListScreen(props) {
                   <button
                     type="button"
                     className="small"
-                    onClick={() => deleteHandler(product)}
+                    onClick={() => deleteHandler(category)}
                   >
                     Удалить
                   </button>
@@ -121,7 +117,16 @@ export default function ProductListScreen(props) {
             ))}
           </tbody>
         </table>
+        
       )}
+      <button
+        style={{ width: "20%",margin: "2rem 40%",  borderRadius: "0" }}
+        type="button"
+        className="shadow"
+        onClick={clickHandler}
+      >
+        Добавить новую категорию
+      </button>
     </div>
   );
 }

@@ -1,75 +1,77 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createProduct,
-  deleteProduct,
-  listProducts,
+  listProductProviders,
+  deleteProvider,
+  createProvider,
 } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import {
-  PRODUCT_CREATE_RESET,
-  PRODUCT_DELETE_RESET,
+
+  PRODUCT_PROVIDER_CREATE_RESET,
+  PRODUCT_PROVIDER_DELETE_RESET,
+
 } from "../constants/productConstants";
 
-export default function ProductListScreen(props) {
-  const sellerMode = props.match.path.indexOf("/seller") >= 0;
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
-  const productCreate = useSelector((state) => state.productCreate);
+export default function ProvidersScreen(props) {
+  const providerList = useSelector((state) => state.productProviderList);
+  const { loading, error, providers } = providerList;
+
+  const providerDelete = useSelector(
+    (state) => state.productProviderDelete
+  );
+  const providerCreate = useSelector(
+    (state) => state.productProviderCreate
+  );
   const {
     loading: loadingCreate,
     error: errorCreate,
     success: successCreate,
-    product: createdProduct,
-  } = productCreate;
-
-  const productDelete = useSelector((state) => state.productDelete);
+    provider: createdProvider,
+  } = providerCreate;
   const {
     loading: loadingDelete,
     error: errorDelete,
     success: successDelete,
-  } = productDelete;
-
-  const userSignin = useSelector((state) => state.userSignin);
-  const { userInfo } = userSignin;
+  } = providerDelete;
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (successCreate) {
-      dispatch({ type: PRODUCT_CREATE_RESET });
-      props.history.push(`/product/${createdProduct._id}/edit`);
+      dispatch({ type: PRODUCT_PROVIDER_CREATE_RESET });
+      props.history.push(`/provider/${createdProvider._id}/edit`);
+      window.location.reload(false);
     }
     if (successDelete) {
-      dispatch({ type: PRODUCT_DELETE_RESET });
+      dispatch({ type: PRODUCT_PROVIDER_DELETE_RESET });
+      window.location.reload(false);
     }
-    dispatch(listProducts({ seller: sellerMode ? userInfo._id : "" }));
+    dispatch(listProductProviders());
   }, [
-    createdProduct,
+    createdProvider,
     dispatch,
     props.history,
-    sellerMode,
     successCreate,
     successDelete,
-    userInfo._id,
   ]);
 
-  const deleteHandler = (product) => {
+  const clickHandler = () => {
+    dispatch(createProvider());
+  };
+  const deleteHandler = (provider) => {
     if (window.confirm("Вы уверены?")) {
-      dispatch(deleteProduct(product._id));
+      dispatch(deleteProvider(provider._id));
     }
   };
-  const createHandler = () => {
-    dispatch(createProduct());
-  };
+
   return (
     <div>
-      <div className="row">
-        <h1>Товары</h1>
+      <div className="">
+        <h1>Управление поставщиками</h1>
+        
       </div>
-      <button style={{margin:'0 auto', width:'100%', borderRadius:'0'}} type="button" className="" onClick={createHandler}>
-        Создать товар
-      </button>
+      
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
 
@@ -84,27 +86,23 @@ export default function ProductListScreen(props) {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Наименование</th>
-              <th>Цена</th>
-              <th>Категория</th>
-              <th>Бренд</th>
+              <th>Наименование поставщика</th>
+              <th>Номер телефона поставщика</th>
               <th>Действия</th>
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product._id}>
-                <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>{product.price}</td>
-                <td>{product.category}</td>
-                <td>{product.brand}</td>
+            {providers.map((provider) => (
+              <tr key={provider._id}>
+                <td>{provider._id}</td>
+                <td>{provider.name}</td>
+                <td>{provider.phoneNumber}</td>
                 <td>
                   <button
                     type="button"
                     className="small"
                     onClick={() =>
-                      props.history.push(`/product/${product._id}/edit`)
+                      props.history.push(`/provider/${provider._id}/edit`)
                     }
                   >
                     Редактировать
@@ -112,7 +110,7 @@ export default function ProductListScreen(props) {
                   <button
                     type="button"
                     className="small"
-                    onClick={() => deleteHandler(product)}
+                    onClick={() => deleteHandler(provider)}
                   >
                     Удалить
                   </button>
@@ -121,7 +119,16 @@ export default function ProductListScreen(props) {
             ))}
           </tbody>
         </table>
+        
       )}
+      <button
+        style={{ width: "20%",margin: "2rem 40%",  borderRadius: "0" }}
+        type="button"
+        className="shadow"
+        onClick={clickHandler}
+      >
+        Добавить нового поставщика
+      </button>
     </div>
   );
 }

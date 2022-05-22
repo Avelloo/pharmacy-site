@@ -20,14 +20,23 @@ import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
-import SellerRoute from "./components/SellerRoute";
-import SellerScreen from "./screens/SellerScreen";
+import WorkerRoute from "./components/WorkerRoute";
+import ProviderScreen from "./screens/ProviderScreen";
 import SearchScreen from "./screens/SearchScreen";
 import SearchBox from "./components/SearchBox";
 import { listProductCategories } from "./actions/productActions";
 import LoadingBox from "./components/LoadingBox";
 import MessageBox from "./components/MessageBox";
-import MapScreen from './screens/MapScreen';
+import MapScreen from "./screens/MapScreen";
+import ToolsScreen from "./screens/WorkersScreen";
+import WorkersScreen from "./screens/WorkersScreen";
+import RegisterWorkerScreen from "./screens/RegisterWorkerScreen";
+import FormReleaseScreen from "./screens/FormReleaseScreen";
+import CategoryScreen from "./screens/CategoryScreen";
+import ProvidersScreen from "./screens/ProvidersScreen";
+import ProvidersEditScreen from "./screens/ProvidersEditScreen";
+import FormReleaseEditScreen from "./screens/FormReleaseEditScreen";
+import CategoryEditScreen from "./screens/CategoryEditScreen";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -101,18 +110,28 @@ function App() {
           ) : (
             <Link to="/signin">Войти в аккаунт</Link>
           )}
-          {userInfo && userInfo.isSeller && (
+          {userInfo && userInfo.isWorker && (
             <div className="dropdown">
               <Link to="#admin">
-                Панель поставщика <i className="fa fa-caret-down"></i>
+                Панель сотрудника <i className="fa fa-caret-down"></i>
               </Link>
               <ul className="dropdown-content">
                 <li>
-                  <Link to="/productlist/seller">Товары</Link>
+                  <Link to="/productlist">Управление товарами</Link>
                 </li>
                 <li>
-                  <Link to="/orderlist/seller">Заказы</Link>
+                  <Link to="/orderlist">Управление заказами</Link>
                 </li>
+                <li>
+                  <Link to="/category">Управление категориями</Link>
+                </li>
+                <li>
+                  <Link to="/formRelease">Управление формами выпуска</Link>
+                </li>
+                <li>
+                  <Link to="/providers">Управление поставщиками</Link>
+                </li>
+
               </ul>
             </div>
           )}
@@ -123,16 +142,14 @@ function App() {
               </Link>
               <ul className="dropdown-content">
                 <li>
-                  <Link to="/dashboard">Инструментарий</Link>
+                  <Link to="/dashboard">Статистика(не работ.)</Link>
                 </li>
                 <li>
-                  <Link to="/productlist">Товары</Link>
+                  <Link to="/workers">Управление сотрудниками</Link>
                 </li>
+
                 <li>
-                  <Link to="/orderlist">Заказы</Link>
-                </li>
-                <li>
-                  <Link to="/userlist">Пользователи</Link>
+                  <Link to="/userlist">Управление клиентами</Link>
                 </li>
               </ul>
             </div>
@@ -157,12 +174,12 @@ function App() {
             <MessageBox variant="danger">{errorCategories}</MessageBox>
           ) : (
             categories.map((c) => (
-              <li key={c}>
+              <li key={c.name}>
                 <Link
-                  to={`/search/category/${c}`}
+                  to={`/search/category/${c.name}`}
                   onClick={() => setSidebarIsOpen(false)}
                 >
-                  {c}
+                  {c.name}
                 </Link>
               </li>
             ))
@@ -170,23 +187,42 @@ function App() {
         </ul>
       </aside>
       <main>
-        <Route path="/seller/:id" component={SellerScreen}></Route>
+        <Route path="/providerDetails/:id" component={ProviderScreen}></Route>
         <Route path="/product/:id" component={ProductScreen} exact></Route>
         <Route
           path="/product/:id/edit"
           component={ProductEditScreen}
           exact
         ></Route>
+        <Route
+          path="/provider/:id/edit"
+          component={ProvidersEditScreen}
+          exact
+        ></Route>
+        <Route
+          path="/formRelease/:id/edit"
+          component={FormReleaseEditScreen}
+          exact
+        ></Route>
+        <Route
+          path="/category/:id/edit"
+          component={CategoryEditScreen}
+          exact
+        ></Route>
         <Route path="/cart/:id?" component={CartScreen} key={3}></Route>
         <Route path="/signin" component={SigninScreen}></Route>
         <Route path="/register" component={RegisterScreen}></Route>
+
         <Route path="/shipping" component={ShippingAdressScreen}></Route>
         <Route path="/payment" component={PaymentMethodScreen}></Route>
         <Route path="/placeorder" component={PlaceOrderScreen}></Route>
+
         <Route path="/order/:id" component={OrderScreen}></Route>
         <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
         <PrivateRoute path="/profile" component={ProfileScreen}></PrivateRoute>
         <PrivateRoute path="/map" component={MapScreen}></PrivateRoute>
+        <AdminRoute path="/registerWorker" component={RegisterWorkerScreen}></AdminRoute>
+        <AdminRoute path="/workers" component={WorkersScreen}></AdminRoute>
         <AdminRoute
           path="/productlist"
           component={ProductListScreen}
@@ -202,14 +238,20 @@ function App() {
           path="/user/:id/edit"
           component={UserEditScreen}
         ></AdminRoute>
-        <SellerRoute
-          path="/productlist/seller"
-          component={ProductListScreen}
-        ></SellerRoute>
-        <SellerRoute
-          path="/orderlist/seller"
-          component={OrderListScreen}
-        ></SellerRoute>
+        <WorkerRoute
+          path="/formRelease"
+          exact
+          component={FormReleaseScreen}
+        ></WorkerRoute>
+        <WorkerRoute
+          path="/category"
+          exact
+          component={CategoryScreen}
+        ></WorkerRoute>
+        <WorkerRoute
+          path="/providers"
+          component={ProvidersScreen}
+        ></WorkerRoute>
         <Route
           path="/search/name/:name?"
           component={SearchScreen}
@@ -226,10 +268,10 @@ function App() {
           exact
         ></Route>
         <Route
-        path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order"
-        component={SearchScreen}
-        exact
-      ></Route>
+          path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order"
+          component={SearchScreen}
+          exact
+        ></Route>
         <Route path="/" component={HomeScreen} exact key={1}></Route>
       </main>
       <footer className="row center">Все права защищены</footer>

@@ -82,16 +82,12 @@ export default function ProductScreen(props) {
               ></img>
               <div className="card-product card-body">
                 <div>
-                  Поставщик{" "}
+                  Поставщик
                   <h2>
-                    <Link to={`/seller/${product.seller._id}`}>
-                      {product.seller.seller.name}
+                    <Link to={`/provider/${product.provider._id}`}>
+                    {product.provider}
                     </Link>
                   </h2>
-                  <Rating
-                    rating={product.seller.seller.rating}
-                    numReviews={product.seller.seller.numReviews}
-                  ></Rating>
                 </div>
                 <div>
                   <div className="row">
@@ -158,7 +154,7 @@ export default function ProductScreen(props) {
               ) : error ? (
                 <MessageBox variant="danger">{error}</MessageBox>
               ) : (
-                <div className=" reviewsBlock">
+                <div className=" reviewsBlock shadow" style={{height:'100%'}}>
                   <h2 id="reviews">Отзывы</h2>
                   {product.reviews.length === 0 && (
                     <MessageBox>
@@ -167,7 +163,7 @@ export default function ProductScreen(props) {
                   )}
                   <ul>
                     {product.reviews.map((review) => (
-                      <li key={review._id} className='shadow' style={{padding:'1rem', margon:'1rem 0'}}>
+                      <li key={review._id} className='' style={{padding:'1rem', margon:'1rem 0', backgroundColor:'rgba(69, 123, 157, 0.06)', borderRadius:'1rem'}}>
                         <strong>{review.name}</strong>
                         <Rating rating={review.rating} caption=" "></Rating>
                         <p>{review.createdAt.substring(0, 10)}</p>
@@ -178,7 +174,7 @@ export default function ProductScreen(props) {
                 </div>
               )}
 
-              <div className=" leaveReview">
+              <div className=" leaveReview shadow">
                 {userInfo ? (
                   <form className="form" onSubmit={submitHandler}>
                     <div>
