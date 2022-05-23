@@ -37,12 +37,7 @@ export default function CartScreen(props) {
     <>
     <h1 className="row center">Корзина</h1>
       {cartItems.length === 0 ? (
-        <MessageBox>
-          В корзине ничего нет.
-          <Link to="/">
-            <h2>Выбрать товары?</h2>
-          </Link>
-        </MessageBox>
+        true
       ) : (
         <div className="card card-body center">
           <ul>
