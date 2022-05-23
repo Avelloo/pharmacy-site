@@ -32,11 +32,12 @@ mongoose
     console.log(err.message);
   });
 
+app.use("/api/orders", orderRouter);
 app.use("/api/uploads", uploadRouter);
 app.use("/api/users", userRouter);
 app.use("/api/seed", seedRouter);
 app.use("/api/products", productRouter);
-app.use("/api/orders", orderRouter);
+
 app.use("/api/category", categoryRouter);
 app.use("/api/formRelease", formReleaseRouter);
 app.use("/api/provider", providerRouter);

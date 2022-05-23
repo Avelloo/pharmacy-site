@@ -28,7 +28,6 @@ import { listProductCategories } from "./actions/productActions";
 import LoadingBox from "./components/LoadingBox";
 import MessageBox from "./components/MessageBox";
 import MapScreen from "./screens/MapScreen";
-import ToolsScreen from "./screens/WorkersScreen";
 import WorkersScreen from "./screens/WorkersScreen";
 import RegisterWorkerScreen from "./screens/RegisterWorkerScreen";
 import FormReleaseScreen from "./screens/FormReleaseScreen";
@@ -37,6 +36,7 @@ import ProvidersScreen from "./screens/ProvidersScreen";
 import ProvidersEditScreen from "./screens/ProvidersEditScreen";
 import FormReleaseEditScreen from "./screens/FormReleaseEditScreen";
 import CategoryEditScreen from "./screens/CategoryEditScreen";
+import DashboardScreen from "./screens/DashboardScreen";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -131,7 +131,6 @@ function App() {
                 <li>
                   <Link to="/providers">Управление поставщиками</Link>
                 </li>
-
               </ul>
             </div>
           )}
@@ -142,7 +141,7 @@ function App() {
               </Link>
               <ul className="dropdown-content">
                 <li>
-                  <Link to="/dashboard">Статистика(не работ.)</Link>
+                  <Link to="/dashboard">Статистика</Link>
                 </li>
                 <li>
                   <Link to="/workers">Управление сотрудниками</Link>
@@ -221,8 +220,12 @@ function App() {
         <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
         <PrivateRoute path="/profile" component={ProfileScreen}></PrivateRoute>
         <PrivateRoute path="/map" component={MapScreen}></PrivateRoute>
-        <AdminRoute path="/registerWorker" component={RegisterWorkerScreen}></AdminRoute>
+        <AdminRoute
+          path="/registerWorker"
+          component={RegisterWorkerScreen}
+        ></AdminRoute>
         <AdminRoute path="/workers" component={WorkersScreen}></AdminRoute>
+        <AdminRoute path="/dashboard" component={DashboardScreen}></AdminRoute>
         <AdminRoute
           path="/productlist"
           component={ProductListScreen}
