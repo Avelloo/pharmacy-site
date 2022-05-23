@@ -16,7 +16,7 @@ export default function OrderHistoryScreen(props) {
     dispatch(listOrderMine());
   }, [dispatch]);
   return (
-    <div>
+    <div className="tableDiv">
       <h1 className="row center">История заказов</h1>
       {loading ? (
         <LoadingBox></LoadingBox>

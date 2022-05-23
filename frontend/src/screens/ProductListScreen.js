@@ -64,12 +64,8 @@ export default function ProductListScreen(props) {
   };
   return (
     <div>
-      <div className="row">
-        <h1>Товары</h1>
-      </div>
-      <button style={{margin:'0 auto', width:'100%', borderRadius:'0'}} type="button" className="" onClick={createHandler}>
-        Создать товар
-      </button>
+    <h1 className="row center">Управление товарами</h1>
+
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
 
@@ -84,10 +80,11 @@ export default function ProductListScreen(props) {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Наименование</th>
+              <th style={{width:'fit-content'}}>Наименование</th>
               <th>Цена</th>
-              <th>Категория</th>
-              <th>Бренд</th>
+              <th style={{width:'1px'}}>Категория</th>
+              <th>Поставщик</th>
+              <th>Форма выпуска</th>
               <th>Действия</th>
             </tr>
           </thead>
@@ -95,10 +92,11 @@ export default function ProductListScreen(props) {
             {products.map((product) => (
               <tr key={product._id}>
                 <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>{product.price}</td>
-                <td>{product.category}</td>
-                <td>{product.brand}</td>
+                <td style={{ minWidth:'fit-content'}}>{product.name}</td>
+                <td>{product.price} Руб.</td>
+                <td style={{ minWidth:'min-content'}}>{product.category}</td>
+                <td>{product.provider}</td>
+                <td>{product.formRelease}</td>
                 <td>
                   <button
                     type="button"
@@ -122,6 +120,14 @@ export default function ProductListScreen(props) {
           </tbody>
         </table>
       )}
+      <button
+        style={{ width: "20%",margin: "2rem 40%",  borderRadius: "0" }}
+        type="button"
+        className="shadow"
+        onClick={createHandler}
+      >
+        Добавить новый товар
+      </button>
     </div>
   );
 }

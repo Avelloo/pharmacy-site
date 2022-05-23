@@ -172,14 +172,22 @@ input,textarea,select{
   margin-left: 1rem;
 }
 .row {
-  display: -webkit-box;
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
+.rowPay {
+  display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+}
 .row-left {
   justify-content: flex-start;
   .min-30 {
+    white-space: break-spaces;
     word-wrap: break-word;
     width: 20%;
   }
@@ -188,6 +196,11 @@ input,textarea,select{
 .row.center {
   display: flex;
   justify-content: center;
+}
+.row.centerCart {
+  display: flex;
+    justify-content: center;
+    flex-direction: row;
 }
 .row.center.header {
   display: flex;
@@ -315,7 +328,6 @@ img {
   margin: 0 auto;
 }
 .card-payment {
-  margin: 10 auto;
   > * {
     display: block;
     width: auto;
@@ -325,8 +337,9 @@ img {
     width: 90px !important;
   }
 
-  width: auto;
-  max-width: fit-content;
+  width: 100%;
+  min-width: fit-content;
+  margin: 1rem;
 }
 
 .price {
@@ -510,20 +523,30 @@ img {
 }
 
 /* table */
-
+.tableDiv{
+  display: flex;
+    flex-direction: column;
+}
 .table {
-  -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
-  -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
-  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.07);
+  box-shadow: 0px 5px 10px 2px rgb(34 60 80 / 7%);
   margin: 0 auto;
-  width: max-content;
+  width: fit-content;
   border-collapse: collapse;
+  display: inline-block;
+  .small{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  td{
+    
+  }
 }
 .table tbody tr:nth-of-type(odd) {
   background-color: #ffffff;
 }
 .table td,
 .table th {
+  
   text-align: left;
   border: 0.1rem solid #f3f3f3;
   margin: 0 1rem;
@@ -662,6 +685,11 @@ button.close-sidebar {
   }
 }
 @media only screen and (min-width: 590px) {
+  .card-payment {
+    width: 70%;
+    margin: 1rem;
+    min-width: auto;
+}
   .img-product {
     margin: 1rem;
     width: 290px;
@@ -694,6 +722,7 @@ button.close-sidebar {
 }
 
 @media only screen and (min-width: 650px) {
+  
   body {
     min-width: none;
   }
@@ -704,9 +733,16 @@ button.close-sidebar {
   }
 
   @media only screen and (min-width: 780px) {
-
+    .card-payment {
+      width: 60%;
+      margin: 1rem;
+      min-width: auto;
+  }
   }
   @media only screen and (min-width: 1060px) {
+    .card-payment {
+      width: 40%;
+  }
     .leaveReview {
       margin: 0 auto;
       max-width: 50rem;

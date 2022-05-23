@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { detailsProducts, updateProduct } from "../actions/productActions";
+import {
+  detailsProducts,
+  listProductCategories,
+  listProductFormRelease,
+  listProductProviders,
+  updateProduct,
+} from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
 import Axios from "axios";
+
 
 export default function ProductEditScreen(props) {
   const productId = props.match.params.id;
@@ -20,6 +27,27 @@ export default function ProductEditScreen(props) {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
   const productUpdate = useSelector((state) => state.productUpdate);
+  const productCategoryList = useSelector((state) => state.productCategoryList);
+  const productFormReleaseList = useSelector(
+    (state) => state.productFormReleaseList
+  );
+  const productProviderList = useSelector((state) => state.productProviderList);
+
+  const {
+    loading: loadingCategories,
+    error: errorCategories,
+    categories,
+  } = productCategoryList;
+  const {
+    loading: loadingFormRelease,
+    error: errorFormRelease,
+    formReleases,
+  } = productFormReleaseList;
+  const {
+    loading: loadingProviders,
+    error: errorProviders,
+    providers,
+  } = productProviderList;
   const {
     loading: loadingUpdate,
     error: errorUpdate,
@@ -28,6 +56,9 @@ export default function ProductEditScreen(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(listProductCategories());
+    dispatch(listProductFormRelease());
+    dispatch(listProductProviders());
     if (successUpdate) {
       props.history.push("/productlist");
     }
@@ -86,6 +117,10 @@ export default function ProductEditScreen(props) {
       setErrorUpload(error.message);
       setLoadingUpload(false);
     }
+  };
+  const closeHandler = () => {
+    props.history.push("/productlist/");
+    window.location.reload(false);
   };
 
   return (
@@ -149,25 +184,62 @@ export default function ProductEditScreen(props) {
             </div>
             <div>
               <label htmlFor="category">Категория</label>
-              <select onChange={(e) => setCategory(e.target.value)}>
-                <option select value="">Выберите категорию</option>
-                <option value="Витамины">Витамины</option>
-              </select>
+              {loadingCategories ? (
+                <LoadingBox></LoadingBox>
+              ) : errorCategories ? (
+                <MessageBox variant="danger">{errorCategories}</MessageBox>
+              ) : (
+                <select onChange={(e) => setCategory(e.target.value)}>
+                  {categories.map((c) => (
+                  <option value={c.name}>
+                    {c.name}
+                  </option>
+                  ))}
+                  <option selected value={category}>
+                    {category} - Выбрано
+                  </option>
+                </select>
+              )}
             </div>
             <div>
               <label htmlFor="category">Форма выпуска</label>
-              <select onChange={(e) => setFormRelease(e.target.value)}>
-                <option select value="">Выберите форму выпуска</option>
-                <option value="Таблетки">Таблетки</option>
-              </select>
+              {loadingFormRelease ? (
+                <LoadingBox></LoadingBox>
+              ) : errorFormRelease ? (
+                <MessageBox variant="danger">{errorFormRelease}</MessageBox>
+              ) : (
+                <select onChange={(e) => setFormRelease(e.target.value)}>
+                  {formReleases.map((c) => (
+                  <option value={c.name}>
+                    {c.name}
+                  </option>
+                  ))}
+                  <option selected value={formRelease}>
+                    {formRelease} - Выбрано
+                  </option>
+                </select>
+              )}
             </div>
             <div>
-              <label htmlFor="provider">Поставщик</label>
-              <select id='provider' onChange={(e) => setProvider(e.target.value)}>
-                <option value="">Выберите поставщика</option>
-                <option value="Бест-фарма">Бест-фарма</option>
-              </select>
+              <label htmlFor="category">Поставщик</label>
+              {loadingProviders ? (
+                <LoadingBox></LoadingBox>
+              ) : errorProviders ? (
+                <MessageBox variant="danger">{errorProviders}</MessageBox>
+              ) : (
+                <select onChange={(e) => setProvider(e.target.value)}>
+                  {providers.map((c) => (
+                  <option value={c.name}>
+                    {c.name}
+                  </option>
+                  ))}
+                  <option selected value={provider}>
+                    {provider} - Выбрано
+                  </option>
+                </select>
+              )}
             </div>
+            
             <div>
               <label htmlFor="countInStock">Кол-во в наличии</label>
               <input
@@ -197,6 +269,16 @@ export default function ProductEditScreen(props) {
             </div>
           </>
         )}
+        <div>
+          <label></label>
+          <button
+            className="shadow"
+            style={{ width: "16%", margin: "0 auto 2rem auto" }}
+            onClick={closeHandler}
+          >
+            Отменить
+          </button>
+        </div>
       </form>
     </div>
   );

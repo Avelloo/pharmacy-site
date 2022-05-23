@@ -66,11 +66,8 @@ export default function FormReleaseScreen(props) {
   };
 
   return (
-    <div>
-      <div className="">
-        <h1>Управление формами выпуска</h1>
-        
-      </div>
+    <div className="tableDiv">
+      <h1 className="row center">Управление формами выпуска</h1>
       
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}

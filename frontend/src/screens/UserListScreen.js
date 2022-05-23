@@ -29,8 +29,8 @@ export default function UserListScreen(props) {
     }
   };
   return (
-    <div>
-      <h1>Управление клиентами</h1>
+    <div className="tableDiv">
+    <h1 className="row center">Управление клиентами</h1>
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
       {successDelete && (

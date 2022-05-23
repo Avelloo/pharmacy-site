@@ -34,18 +34,11 @@ export default function WorkersScreen(props) {
   }
 
   return (
-    <div>
-      <div>
-        <h1>Управление сотрудниками</h1>
-      </div>
-      <button
-        style={{ margin: "0 auto", width: "100%", borderRadius: "0" }}
-        type="button"
-        className=""
-        onClick={clickHandler}
-      >
-        Зарегистрировать нового сотрудника
-      </button>
+    <div className="tableDiv">
+      
+    <h1 className="row center">Управление сотрудниками</h1>
+      
+      
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
       {successDelete && (
@@ -98,6 +91,14 @@ export default function WorkersScreen(props) {
           </tbody>
         </table>
       )}
+      <button
+        style={{ width: "20%",margin: "2rem 40%",  borderRadius: "0" }}
+        type="button"
+        className="shadow"
+        onClick={clickHandler}
+      >
+        Зарегистрировать нового сотрудника
+      </button>
     </div>
   );
 }

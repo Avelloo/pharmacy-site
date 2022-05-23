@@ -66,11 +66,8 @@ export default function ProvidersScreen(props) {
   };
 
   return (
-    <div>
-      <div className="">
-        <h1>Управление поставщиками</h1>
-        
-      </div>
+    <div className="tableDiv">
+    <h1 className="row center">Управление поставщиками</h1>
       
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}

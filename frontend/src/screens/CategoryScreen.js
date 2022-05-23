@@ -66,11 +66,8 @@ export default function CategoryScreen(props) {
   };
 
   return (
-    <div>
-      <div className="">
-        <h1>Управление категориями</h1>
-        
-      </div>
+    <div className="tableDiv">
+    <h1 className="row center">Управление категориями</h1>
       
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}

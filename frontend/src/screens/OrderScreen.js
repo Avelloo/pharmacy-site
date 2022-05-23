@@ -88,7 +88,7 @@ export default function OrderScreen(props) {
   ) : (
     <div>
       <h1>Заказ {order._id}</h1>
-      <div className="row top center">
+      <div className="rowPay top center">
         <div className="col-2">
           <ul>
             <li>
@@ -134,7 +134,7 @@ export default function OrderScreen(props) {
             </li>
           </ul>
         </div>
-        <div className="col-1">
+       
           <div className="card card-body card-payment">
             <h2 className="h2block">Корзина:</h2>
             <ul>
@@ -158,8 +158,8 @@ export default function OrderScreen(props) {
               ))}
             </ul>
           </div>
-        </div>
-        <div className="col-1">
+        
+        
           <div className="card card-body">
             <ul>
               <li>
@@ -222,7 +222,7 @@ export default function OrderScreen(props) {
               )}
             </ul>
           </div>
-        </div>
+        
       </div>
     </div>
   );

@@ -29,8 +29,8 @@ export default function OrderListScreen(props) {
     }
   };
   return (
-    <div>
-      <h1>Заказы</h1>
+    <div className='tableDiv'>
+    <h1 className="row center">Управление заказами</h1>
       {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
       {loading ? (
