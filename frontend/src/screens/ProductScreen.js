@@ -90,13 +90,13 @@ export default function ProductScreen(props) {
       ) : (
         <>
           <div className="row-top-product">
-            <div className="productBlock">
+            <div className="productBlock shadow">
               <img
                 className="img-product"
                 src={product.image}
                 alt={product.name}
               ></img>
-              <div className="card-product card-body">
+              <div className="card-product card-body" style={{boxShadow:'0'}}>
                 <div>
                   Поставщик
                   <h2>
