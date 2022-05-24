@@ -151,7 +151,7 @@ export default function SupportScreen() {
             <ul ref={uiMessagesRef}>
               {messages.length === 0 && <li>Нет сообщений.</li>}
               {messages.map((msg, index) => (
-                <li key={index}>
+                <li style={{breakWork:'break-word'}} key={index}>
                   <strong>{`${msg.name}: `}</strong> {msg.body}
                 </li>
               ))}
