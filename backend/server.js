@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
     if (user) {
       user.online = false;
       console.log("Не в сети:", user.name);
-      const admin = users.find((x) => x.isAdmin && x.online);
+      const admin = users.find((x) => (x.isAdmin || x.isWorker) && x.online);
       if (admin) {
         io.to(admin.socketId).emit("updateUser", user);
       }
@@ -93,17 +93,17 @@ io.on("connection", (socket) => {
       users.push(updatedUser);
     }
     console.log("В сети:", user.name);
-    const admin = users.find((x) => x.isAdmin && x.online);
+    const admin = users.find((x) => (x.isAdmin || x.isWorker) && x.online);
     if (admin) {
       io.to(admin.socketId).emit("updateUser", updatedUser);
     }
-    if (updatedUser.isAdmin) {
+    if (updatedUser.isAdmin || updatedUser.isWorker) {
       io.to(updatedUser.socketId).emit("listUsers", users);
     }
   });
 
   socket.on("onUserSelected", (user) => {
-    const admin = users.find((x) => x.isAdmin && x.online);
+    const admin = users.find((x) => (x.isAdmin || x.isWorker) && x.online);
     if (admin) {
       const existUser = users.find((x) => x._id === user._id);
       io.to(admin.socketId).emit("selectUser", existUser);
@@ -111,14 +111,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("onMessage", (message) => {
-    if (message.isAdmin) {
+    if (message.isAdmin || message.isWorker) {
       const user = users.find((x) => x._id === message._id && x.online);
       if (user) {
         io.to(user.socketId).emit("message", message);
         user.messages.push(message);
       }
     } else {
-      const admin = users.find((x) => x.isAdmin && x.online);
+      const admin = users.find((x) => (x.isAdmin || x.isWorker) && x.online);
       if (admin) {
         io.to(admin.socketId).emit("message", message);
         const user = users.find((x) => x._id === message._id && x.online);
