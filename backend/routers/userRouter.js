@@ -1,17 +1,14 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
-import bcrypt from 'bcryptjs';
-import data from '../data.js';
-import User from '../models/userModel.js';
-import { generateToken, isAdmin, isAuth } from '../utils.js';
+import express from "express";
+import expressAsyncHandler from "express-async-handler";
+import bcrypt from "bcryptjs";
+import data from "../data.js";
+import User from "../models/userModel.js";
+import { generateToken, isAdmin, isAuth } from "../utils.js";
 
 const userRouter = express.Router();
 
-
-
-
 userRouter.get(
-  '/seed',
+  "/seed",
   expressAsyncHandler(async (req, res) => {
     // await User.remove({});
     const createdUsers = await User.insertMany(data.users);
@@ -20,7 +17,7 @@ userRouter.get(
 );
 
 userRouter.post(
-  '/signin',
+  "/signin",
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -31,17 +28,23 @@ userRouter.post(
           email: user.email,
           isAdmin: user.isAdmin,
           isWorker: user.isWorker,
+          canManageCategories: user.canManageCategories,
+          canManageFormReleases: user.canManageFormReleases,
+          canManageOrders: user.canManageOrders,
+          canManageProducts: user.canManageProducts,
+          canManageProviders: user.canManageProviders,
+          canManageSupport: user.canManageSupport,
           token: generateToken(user),
         });
         return;
       }
     }
-    res.status(401).send({ message: 'Неправильный email или пароль' });
+    res.status(401).send({ message: "Неправильный email или пароль" });
   })
 );
 
 userRouter.post(
-  '/register',
+  "/register",
   expressAsyncHandler(async (req, res) => {
     const user = new User({
       name: req.body.name,
@@ -62,18 +65,18 @@ userRouter.post(
 );
 
 userRouter.get(
-  '/:id',
+  "/:id",
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
     if (user) {
       res.send(user);
     } else {
-      res.status(404).send({ message: 'Пользователь не найден' });
+      res.status(404).send({ message: "Пользователь не найден" });
     }
   })
 );
 userRouter.put(
-  '/profile',
+  "/profile",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
@@ -98,7 +101,7 @@ userRouter.put(
 );
 
 userRouter.get(
-  '/',
+  "/",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -108,39 +111,53 @@ userRouter.get(
 );
 
 userRouter.delete(
-  '/:id',
+  "/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
     if (user) {
-      if (user.email === 'admin@admin.com') {
-        res.status(400).send({ message: 'Нельзя удалить администратора сайта' });
+      if (user.email === "admin@admin.com") {
+        res
+          .status(400)
+          .send({ message: "Нельзя удалить администратора сайта" });
         return;
       }
       const deleteUser = await user.remove();
-      res.send({ message: 'Пользователь удален', user: deleteUser });
+      res.send({ message: "Пользователь удален", user: deleteUser });
     } else {
-      res.status(404).send({ message: 'Пользователь не найден' });
+      res.status(404).send({ message: "Пользователь не найден" });
     }
   })
 );
 
 userRouter.put(
-  '/:id',
+  "/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
+
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
       user.isWorker = req.body.isWorker || user.isWorker;
       user.isAdmin = req.body.isAdmin || user.isAdmin;
+      user.canManageCategories =
+        req.body.canManageCategories || user.canManageCategories;
+      user.canManageFormReleases =
+        req.body.canManageFormReleases || user.canManageFormReleases;
+      user.canManageOrders = req.body.canManageOrders || user.canManageOrders;
+      user.canManageProducts =
+        req.body.canManageProducts || user.canManageProducts;
+      user.canManageProviders =
+        req.body.canManageProviders || user.canManageProviders;
+      user.canManageSupport =
+        req.body.canManageSupport || user.canManageSupport;
       const updatedUser = await user.save();
-      res.send({ message: 'Пользователь обновлен', user: updatedUser });
+      res.send({ message: "Пользователь обновлен", user: updatedUser });
     } else {
-      res.status(404).send({ message: 'Пользователь не найден' });
+      res.status(404).send({ message: "Пользователь не найден" });
     }
   })
 );

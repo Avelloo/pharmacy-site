@@ -96,7 +96,7 @@ export default function ProductScreen(props) {
                 src={product.image}
                 alt={product.name}
               ></img>
-              <div className="card-product card-body" style={{boxShadow:'0'}}>
+              <div className="card-product card-body" style={{boxShadow:'0px 0px 0px 0px', border:'0px'}}>
                 <div>
                   Поставщик
                   <h2>

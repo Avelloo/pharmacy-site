@@ -37,6 +37,7 @@ export default function SupportScreen() {
         _id: userInfo._id,
         name: userInfo.name,
         isAdmin: userInfo.isAdmin,
+        isWorker: userInfo.isWorker,
       });
       sk.on('message', (data) => {
         if (allSelectedUser._id === data._id) {
@@ -104,6 +105,7 @@ export default function SupportScreen() {
           body: messageBody,
           name: userInfo.name,
           isAdmin: userInfo.isAdmin,
+          isWorker: userInfo.isWorker,
           _id: selectedUser._id,
         });
       }, 1000);

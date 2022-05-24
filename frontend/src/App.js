@@ -37,8 +37,8 @@ import ProvidersEditScreen from "./screens/ProvidersEditScreen";
 import FormReleaseEditScreen from "./screens/FormReleaseEditScreen";
 import CategoryEditScreen from "./screens/CategoryEditScreen";
 import DashboardScreen from "./screens/DashboardScreen";
-import SupportScreen from './screens/SupportScreen';
-import ChatBox from './components/ChatBox';
+import SupportScreen from "./screens/SupportScreen";
+import ChatBox from "./components/ChatBox";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -118,21 +118,36 @@ function App() {
                 Панель сотрудника <i className="fa fa-caret-down"></i>
               </Link>
               <ul className="dropdown-content">
-                <li>
-                  <Link to="/productlist">Управление товарами</Link>
-                </li>
-                <li>
-                  <Link to="/orderlist">Управление заказами</Link>
-                </li>
-                <li>
-                  <Link to="/category">Управление категориями</Link>
-                </li>
-                <li>
-                  <Link to="/formRelease">Управление формами выпуска</Link>
-                </li>
-                <li>
-                  <Link to="/providers">Управление поставщиками</Link>
-                </li>
+                {userInfo.canManageProducts &&(
+                  <li>
+                    <Link to="/productlist">Управление товарами</Link>
+                  </li>
+                )}
+                {userInfo.canManageOrders &&(
+                  <li>
+                    <Link to="/orderlist">Управление заказами</Link>
+                  </li>
+                )}
+                {userInfo.canManageCategories &&(
+                  <li>
+                    <Link to="/category">Управление категориями</Link>
+                  </li>
+                )}
+                {userInfo.canManageFormReleases &&(
+                  <li>
+                    <Link to="/formRelease">Управление формами выпуска</Link>
+                  </li>
+                )}
+                {userInfo.canManageProviders &&(
+                  <li>
+                    <Link to="/providers">Управление поставщиками</Link>
+                  </li>
+                )}
+                {userInfo.canManageSupport &&(
+                  <li>
+                    <Link to="/support">Обратная связь с клиентами</Link>
+                  </li>
+                )}
               </ul>
             </div>
           )}
@@ -152,9 +167,6 @@ function App() {
                 <li>
                   <Link to="/userlist">Управление клиентами</Link>
                 </li>
-                <li>
-                <Link to="/support">Обратная связь с клиентами</Link>
-              </li>
               </ul>
             </div>
           )}
@@ -236,13 +248,13 @@ function App() {
           component={ProductListScreen}
           exact
         ></AdminRoute>
-        <AdminRoute
+        <WorkerRoute
           path="/orderlist"
           component={OrderListScreen}
           exact
-        ></AdminRoute>
+        ></WorkerRoute>
         <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute>
-        <AdminRoute path="/support" component={SupportScreen}></AdminRoute>
+        <WorkerRoute path="/support" component={SupportScreen}></WorkerRoute>
         <AdminRoute
           path="/user/:id/edit"
           component={UserEditScreen}
@@ -284,9 +296,11 @@ function App() {
         <Route path="/" component={HomeScreen} exact key={1}></Route>
       </main>
       <footer className="row center">
-      {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />}
-      <div>Все права защищены</div>{' '}
-    </footer>
+        {userInfo && !userInfo.isAdmin && !userInfo.isWorker && (
+          <ChatBox userInfo={userInfo} />
+        )}
+        <div>Все права защищены</div>{" "}
+      </footer>
     </div>
   );
 }

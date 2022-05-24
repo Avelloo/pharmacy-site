@@ -153,7 +153,7 @@ productRouter.post(
       if (product.reviews.find((x) => x.name === req.user.name)) {
         return res
           .status(400)
-          .send({ message: 'Вы уже отправили отзыв' });
+          .send({ message: 'Вы уже отправляли отзыв' });
       }
       const review = {
         name: req.user.name,

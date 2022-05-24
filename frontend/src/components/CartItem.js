@@ -11,8 +11,8 @@ export default function CartItem(props) {
   const { cartItem } = props;
   return (
     <div>
-      <div key={cartItem._id} className="card">
-        <Link to={`/product/${cartItem._id}`}>
+      <div key={cartItem.product} className="card">
+        <Link to={`/product/${cartItem.product}`}>
           <img
             className="img-medium"
             src={cartItem.image}
