@@ -37,6 +37,8 @@ import ProvidersEditScreen from "./screens/ProvidersEditScreen";
 import FormReleaseEditScreen from "./screens/FormReleaseEditScreen";
 import CategoryEditScreen from "./screens/CategoryEditScreen";
 import DashboardScreen from "./screens/DashboardScreen";
+import SupportScreen from './screens/SupportScreen';
+import ChatBox from './components/ChatBox';
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -150,6 +152,9 @@ function App() {
                 <li>
                   <Link to="/userlist">Управление клиентами</Link>
                 </li>
+                <li>
+                <Link to="/support">Обратная связь с клиентами</Link>
+              </li>
               </ul>
             </div>
           )}
@@ -237,6 +242,7 @@ function App() {
           exact
         ></AdminRoute>
         <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute>
+        <AdminRoute path="/support" component={SupportScreen}></AdminRoute>
         <AdminRoute
           path="/user/:id/edit"
           component={UserEditScreen}
@@ -277,7 +283,10 @@ function App() {
         ></Route>
         <Route path="/" component={HomeScreen} exact key={1}></Route>
       </main>
-      <footer className="row center">Все права защищены</footer>
+      <footer className="row center">
+      {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />}
+      <div>Все права защищены</div>{' '}
+    </footer>
     </div>
   );
 }
