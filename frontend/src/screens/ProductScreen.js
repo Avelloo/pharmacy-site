@@ -26,6 +26,7 @@ export default function ProductScreen(props) {
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [userPrescript, setUserPrescript] = useState("");
 
   useEffect(() => {
     if (successReviewCreate) {
@@ -38,7 +39,21 @@ export default function ProductScreen(props) {
   }, [dispatch, productId, successReviewCreate]);
 
   const addToCartHandler = () => {
-    props.history.push(`/cart/${productId}?qty=${qty}`);
+    if(product.isPrescripted){
+      if(userPrescript == product.prescript){
+        props.history.push(`/cart/${productId}?qty=${qty}`);
+      }else{
+        if(userPrescript == ''){
+          alert("Введите хеш рецепта!");
+        }else{
+          alert("Хеш рецепта не подходит!");
+        }
+       
+      }
+    }else{
+      props.history.push(`/cart/${productId}?qty=${qty}`);
+    }
+
   };
 
   const submitHandler = (e) => {
@@ -51,6 +66,7 @@ export default function ProductScreen(props) {
       alert("Пожалуйста введите отзыв и поставьте рейтинг.");
     }
   };
+
 
   return (
     <>
@@ -96,17 +112,38 @@ export default function ProductScreen(props) {
                   </div>
                 </div>
                 <div>
-                  <div className="row">
+                  <div className="row" style={{margin:'1rem 0'}}>
                     <div>Статус:</div>
                     <div>
                       {product.countInStock > 0 ? (
                         <span className="success" style={{marginLeft: '1rem'}}>Есть в наличии</span>
                       ) : (
-                        <span className="danger">Товар отсутствует</span>
+                        <span className="danger"  style={{marginLeft: '1rem'}} >Товар отсутствует</span>
                       )}
                     </div>
                   </div>
                 </div>
+                <div>
+                  <div className="row" style={{margin:'1rem 0'}}>
+                    <div>Рецепт:</div>
+                    <div>
+                      {product.isPrescripted? (
+                        <span className="danger"  style={{marginLeft: '1rem'}} >Требуется рецепт</span>
+                      ) : (
+                        <span className="success" style={{marginLeft: '1rem'}}>Рецепт не нужен</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {product.isPrescripted? (
+                  <div className="" style={{margin:'2rem 0', borderRadius:'1rem'}}>
+                   <p style={{margin:'2rem 0', padding:'0,5rem'}}>Это рецептурный препарат. Перед добавлением его в корзину введите хеш рецепта ниже:</p>
+                   <input onChange={e => setUserPrescript(e.target.value)} className="shadow" style={{width:'210px', backgroundColor:'#b5ccff', borderRadius:'0 0 1rem 1rem'}}></input>
+                 </div>
+                ) : (
+                 ''
+                )}
+                 
                 {product.countInStock > 0 && (
                   <>
                     <div className="qtySelector">

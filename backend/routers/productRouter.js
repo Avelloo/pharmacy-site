@@ -93,6 +93,8 @@ productRouter.post(
       countInStock: 0,
       rating: 0,
       numReviews: 0,
+      isPrescripted: false,
+      prescript: '',
       description: "Описание",
     });
     const createdProduct = await product.save();
@@ -113,6 +115,8 @@ productRouter.put(
       product.image = req.body.image;
       product.category = req.body.category;
       product.provider = req.body.provider;
+      product.isPrescripted = req.body.isPrescripted;
+      product.prescript = req.body.prescript;
       product.formRelease = req.body.formRelease;
       product.countInStock = req.body.countInStock;
       product.description = req.body.description;

@@ -12,7 +12,6 @@ import MessageBox from "../components/MessageBox";
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
 import Axios from "axios";
 
-
 export default function ProductEditScreen(props) {
   const productId = props.match.params.id;
   const [name, setName] = useState("");
@@ -23,6 +22,9 @@ export default function ProductEditScreen(props) {
   const [provider, setProvider] = useState("");
   const [formRelease, setFormRelease] = useState("");
   const [description, setDescription] = useState("");
+  const [isPrescripted, setIsPrescripted] = useState("");
+  const [prescript, setPrescript] = useState("");
+  const [prescriptVision, setPrescriptVision] = useState("");
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
@@ -74,6 +76,9 @@ export default function ProductEditScreen(props) {
       setProvider(product.provider);
       setFormRelease(product.formRelease);
       setDescription(product.description);
+      setPrescript(product.prescript);
+      setIsPrescripted(product.isPrescripted);
+
     }
   }, [product, dispatch, productId, successUpdate, props.history]);
 
@@ -90,6 +95,8 @@ export default function ProductEditScreen(props) {
         description,
         provider,
         formRelease,
+        isPrescripted,
+        prescript,
       })
     );
   };
@@ -123,6 +130,32 @@ export default function ProductEditScreen(props) {
     window.location.reload(false);
   };
 
+  const handleIsPrescripted = () => {
+    console.log("Было:" + isPrescripted);
+    setIsPrescripted(!isPrescripted);
+  };
+
+
+  const hashHandler = () => {
+    setPrescript(makeid(20));
+  };
+
+  function makeid(length) {
+    var result = "";
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    console.log(result);
+    return result;
+  }
+
+  if(prescript == ''){
+    setPrescript(makeid(20));
+  }
+
   return (
     <div>
       <form className="form" onSubmit={submitHandler}>
@@ -137,6 +170,33 @@ export default function ProductEditScreen(props) {
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={isPrescripted}
+                  onChange={handleIsPrescripted}
+                />
+                Требуется рецепт?
+              </label>
+            </div>
+            <div style={{ display: isPrescripted ? "flex" : "none" }}>
+              <label>Хеш-рецепт для покупки данного препапата:</label>
+              <input
+                type="input"
+                disabled="true"
+                style={{ borderRadius: "1rem 1rem 0 0" }}
+                value={prescript}
+              />
+              <button
+                type="button"
+                style={{ borderRadius: "0 0 1rem 1rem" }}
+                onClick={hashHandler}
+              >
+                Сгенерировать новый хеш-рецепт
+              </button>
+            </div>
+
             <div>
               <label htmlFor="name">Наименование</label>
               <input
@@ -191,9 +251,7 @@ export default function ProductEditScreen(props) {
               ) : (
                 <select onChange={(e) => setCategory(e.target.value)}>
                   {categories.map((c) => (
-                  <option value={c.name}>
-                    {c.name}
-                  </option>
+                    <option value={c.name}>{c.name}</option>
                   ))}
                   <option selected value={category}>
                     {category} - Выбрано
@@ -210,9 +268,7 @@ export default function ProductEditScreen(props) {
               ) : (
                 <select onChange={(e) => setFormRelease(e.target.value)}>
                   {formReleases.map((c) => (
-                  <option value={c.name}>
-                    {c.name}
-                  </option>
+                    <option value={c.name}>{c.name}</option>
                   ))}
                   <option selected value={formRelease}>
                     {formRelease} - Выбрано
@@ -229,9 +285,7 @@ export default function ProductEditScreen(props) {
               ) : (
                 <select onChange={(e) => setProvider(e.target.value)}>
                   {providers.map((c) => (
-                  <option value={c.name}>
-                    {c.name}
-                  </option>
+                    <option value={c.name}>{c.name}</option>
                   ))}
                   <option selected value={provider}>
                     {provider} - Выбрано
@@ -239,7 +293,7 @@ export default function ProductEditScreen(props) {
                 </select>
               )}
             </div>
-            
+
             <div>
               <label htmlFor="countInStock">Кол-во в наличии</label>
               <input
