@@ -16,7 +16,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm install socket.io && node --experimental-modules server.js"
+    "start": "node --experimental-modules server.js"
   },
   "repository": {
     "type": "git",
