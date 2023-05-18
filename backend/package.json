@@ -14,7 +14,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node --experimental-modules server.js"
+    "start": "npm install --legacy-peer-deps && node --experimental-modules server.js"
   },
   "repository": {
     "type": "git",
