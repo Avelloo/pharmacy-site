@@ -16,7 +16,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "cd backend && npm install --legacy-peer-deps && cd ../frontend && npm install --legacy-peer-deps && npm run build",
+    "build": "cd backend && npm install socket.io && npm install --legacy-peer-deps && cd ../frontend && npm install --legacy-peer-deps && npm run build",
     "start": "node --experimental-modules backend/server.js"
   },
   "repository": {
