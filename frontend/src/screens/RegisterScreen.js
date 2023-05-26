@@ -55,9 +55,9 @@ export default function RegisterScreen(props) {
           ></input>
         </div>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Номер телефона</label>
           <input
-            type="number"
+            type="tel"
             id="number"
             placeholder="Введите номер телефона"
             required

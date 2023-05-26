@@ -46,10 +46,10 @@ export default function SigninScreen(props) {
             required
             onChange={(e) => setEmail(e.target.value)}
           >
-            
+          <label htmlFor="email">Номер телефона</label>
           </input>
             <input
-            type="number"
+            type="tel"
             id="number"
             placeholder="Введите номер телефона"
             required
