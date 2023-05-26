@@ -45,6 +45,15 @@ export default function SigninScreen(props) {
             placeholder="Введите адрес эл. почты"
             required
             onChange={(e) => setEmail(e.target.value)}
+          >
+            
+          </input>
+            <input
+            type="number"
+            id="number"
+            placeholder="Введите номер телефона"
+            required
+            //onChange={(e) => setEmail(e.target.value)}
           ></input>
         </div>
         <div>

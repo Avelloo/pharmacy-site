@@ -55,6 +55,16 @@ export default function RegisterScreen(props) {
           ></input>
         </div>
         <div>
+          <label htmlFor="email">Email</label>
+          <input
+            type="number"
+            id="number"
+            placeholder="Введите номер телефона"
+            required
+            //onChange={(e) => setEmail(e.target.value)}
+          ></input>
+        </div>
+        <div>
           <label htmlFor="name">ФИО</label>
           <input
             type="text"
