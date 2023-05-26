@@ -55,7 +55,7 @@ export default function RegisterScreen(props) {
           ></input>
         </div>
         <div>
-          <label htmlFor="number">Номер телефона</label>
+          <label>Номер телефона</label>
           <input
             type="tel"
             id="number"
