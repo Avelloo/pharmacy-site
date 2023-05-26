@@ -46,7 +46,7 @@ export default function SigninScreen(props) {
             required
             onChange={(e) => setEmail(e.target.value)}
           >
-          <label htmlFor="email">Номер телефона</label>
+          <label htmlFor="number">Номер телефона</label>
           </input>
             <input
             type="tel"
