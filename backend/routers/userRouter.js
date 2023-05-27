@@ -19,7 +19,6 @@ userRouter.get(
   })
 );
 
-const crypto = require('crypto');
 
 // функция для хэширования пароля
 function hashPassword(password) {
