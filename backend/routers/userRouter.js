@@ -4,6 +4,9 @@ import bcrypt from "bcryptjs";
 import data from "../data.js";
 import User from "../models/userModel.js";
 import { generateToken, isAdmin, isAuth } from "../utils.js";
+import crypto from 'crypto';
+
+const secretKey = 'mySecretKey';
 
 const userRouter = express.Router();
 
@@ -16,12 +19,24 @@ userRouter.get(
   })
 );
 
+const crypto = require('crypto');
+
+// функция для хэширования пароля
+function hashPassword(password) {
+  const secretKey = 'mySecretKey';
+  const hmac = crypto.createHmac('sha256', secretKey);
+  hmac.update(password);
+  const hash = hmac.digest('hex');
+  return hash;
+}
+
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
-      if (bcrypt.compareSync(req.body.password, user.password)) {
+      // сравнение хешей паролей
+      if (hashPassword(req.body.password) === user.password) {
         res.send({
           _id: user._id,
           name: user.name,
@@ -46,10 +61,15 @@ userRouter.post(
 userRouter.post(
   "/register",
   expressAsyncHandler(async (req, res) => {
+    const userExists = await User.findOne({ email: req.body.email });
+    if (userExists) {
+      res.status(400).send({ message: "Пользователь уже существует" });
+      return;
+    }
     const user = new User({
       name: req.body.name,
       email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8),
+      password: hashPassword(req.body.password), // сохранение хеша пароля вместо самого пароля
       isWorker: req.body.isWorker,
     });
     const createdUser = await user.save();
@@ -85,7 +105,7 @@ userRouter.put(
       user.email = req.body.email || user.email;
 
       if (req.body.password) {
-        user.password = bcrypt.hashSync(req.body.password, 8);
+        user.password = hashPassword(req.body.password)
       }
       const updatedUser = await user.save();
       res.send({
